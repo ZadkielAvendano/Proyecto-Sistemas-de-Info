@@ -4,7 +4,11 @@ import Navbar from "./Navbar";
 
 export default function Homepage() {
   return (
-    <Navbar /> 
+    <>
+      
+      <h1>Homepage</h1>
+      <p>Welcome to the homepage!</p>
+    </>
         
   )
 }
