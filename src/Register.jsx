@@ -1,7 +1,7 @@
 import  { useState } from "react";
 import {supabase} from './config/supabase';
 export default function Register() {
-    const [message, setMessage] = useState("mensaje de registro");
+    const [message, setMessage] = useState('mensaje de registro');
     const [form, setForm] = useState({email: '', password: ''
   });
 
