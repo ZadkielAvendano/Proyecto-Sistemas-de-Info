@@ -1,6 +1,8 @@
 import  { useState } from "react";
 import {supabase} from './config/supabase';
+import { useNavigate } from "react-router";
 export default function Register() {
+    const navigate = useNavigate();
     const [message, setMessage] = useState('mensaje de registro');
     const [form, setForm] = useState({email: '', password: ''
   });
@@ -22,12 +24,12 @@ export default function Register() {
             return;
     };
     if (data) {
-        setMessage("Registro exitoso. Por favor, verifica tu correo electrónico.");
+        
         setForm({
             email: '',
             password: ''
         });
-        return;
+        navigate('/login');
     }
   };
 
