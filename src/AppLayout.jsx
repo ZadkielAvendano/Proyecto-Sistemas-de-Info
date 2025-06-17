@@ -1,16 +1,17 @@
 import { Outlet } from "react-router";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 
 export default function AppLayout() {
   return (
-    <>
-    <Navbar/>
-    <h1>AppLayout</h1>
-    <Outlet/>
-
-    
-    
-    </>
-  )
+    <div className="app-container">
+      <Navbar />
+      <div className="main-content">
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
+  );
 }
+
