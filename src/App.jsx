@@ -8,6 +8,7 @@ import Profile from "./Profile.jsx";
 import AppLayout from "./AppLayout.jsx";
 import Register from "./Register.jsx";
 import Login from "./Login.jsx";
+import "./css/App.css";
 function App() {
   const router = createBrowserRouter([
     
