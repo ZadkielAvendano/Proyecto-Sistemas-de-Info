@@ -3,7 +3,8 @@ import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
 import "./css/Homepage.css"
-   
+import CommentSystem from "./CommentSystem"; 
+
 export default function Homepage() {
   return (
     <>
@@ -56,7 +57,14 @@ export default function Homepage() {
           tablets o computadoras. Puedes reservar espacios desde tu teléfono con la misma facilidad que desde una laptop, sin perder funcionalidad.</p>
         <button>Reservar ahora</button>
       </article>
+  
+      {/* Add the Comment System Section */}
+      <section className="comments-section">
+        <h2>Comentarios y Feedback</h2>
+        <p>Déjanos saber tu opinión sobre el sistema de reservas</p>
+        <CommentSystem />
+      </section>
     </>
-        
+
   )
 }
