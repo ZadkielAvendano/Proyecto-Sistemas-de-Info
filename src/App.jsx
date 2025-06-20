@@ -9,6 +9,7 @@ import AppLayout from "./AppLayout.jsx";
 import Register from "./Register.jsx";
 import Login from "./Login.jsx";
 import "./css/App.css";
+import ContactPage from "./ContactPage.jsx";
 function App() {
   const router = createBrowserRouter([
     
@@ -27,7 +28,12 @@ function App() {
         }, {
           path: '/profile',
           element: <Profile/>
-        },]}
+        },
+      {
+          path: '/contacto', 
+          element: <ContactPage />
+        },
+      ]}
 
 
   ])

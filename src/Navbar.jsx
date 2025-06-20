@@ -12,7 +12,7 @@ export default function Navbar() {
           <li><Link>Espacios</Link></li>
           <li><Link>Calendarios</Link></li>
           <li><Link>Reservas</Link></li>
-          <li><Link>Contacto</Link></li>
+          <li><Link to="/contacto">Contacto</Link></li>
           <li id="login_button"><Link to='/login'><button>Iniciar Sesion</button></Link></li>
           <li id="register_button" className="secondary_button"><Link to='/register'><button>Registrarse</button></Link></li>
           <li id="profile_button"><Link to='/profile'><button>Perfil</button></Link></li>
