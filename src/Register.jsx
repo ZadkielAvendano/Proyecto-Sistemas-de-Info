@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [message, setMessage] = useState("mensaje de registro");
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("Registro");
+  const [form, setForm] = useState({ email: "", password: "",nombre:"",apellido: ""});
 
   // Detectar sesión activa (por ejemplo, si regresa de Google)
   useEffect(() => {
@@ -33,12 +33,19 @@ export default function Register() {
     const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
+      options: {
+        data: {
+          nombre: form.nombre,
+          apellido: form.apellido,
+          display_name: `${form.nombre} ${form.apellido}`,
+        }
+      }
     });
     if (error) {
       setMessage(`Error al registrar: ${error.message}`);
       return;
     }
-    setForm({ email: "", password: "" });
+    setForm({ email: "", password: "", nombre: "", apellido: ""});
     navigate("/login");
   };
 
@@ -63,21 +70,47 @@ export default function Register() {
       }}
     >
       <h1>{message}</h1>
-      <h2>Registro</h2>
+      <h2>Regístrate para reservar el espacio adaptado a ti.</h2>
 
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 16 }}>
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </div>
+        <label htmlFor="nombre">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          value={form.nombre}
+          onChange={handleChange}
+          required
+          style={{ width: "100%", padding: 8, marginTop: 4 }}
+        />
+      </div>
+
+      <div style={{ marginBottom: 16 }}>
+        <label htmlFor="apellido">Apellido</label>
+        <input
+          type="text"
+          id="apellido"
+          name="apellido"
+          value={form.apellido}
+          onChange={handleChange}
+          required
+          style={{ width: "100%", padding: 8, marginTop: 4 }}
+        />
+      </div>
+
+      <div style={{ marginBottom: 16 }}>
+        <label htmlFor="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          required
+          style={{ width: "100%", padding: 8, marginTop: 4 }}
+        />
+      </div>
 
         <div style={{ marginBottom: 16 }}>
           <label htmlFor="password">Contraseña</label>
