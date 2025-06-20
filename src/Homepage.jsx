@@ -58,7 +58,7 @@ export default function Homepage() {
         <button>Reservar ahora</button>
       </article>
   
-      {/* Add the Comment System Section */}
+      {/* añade la sección de comentarios */}
       <section className="comments-section">
         <h2>Comentarios y Feedback</h2>
         <p>Déjanos saber tu opinión sobre el sistema de reservas</p>

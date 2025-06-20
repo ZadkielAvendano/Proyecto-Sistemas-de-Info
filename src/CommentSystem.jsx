@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import avatar from "./assets/unimet_logo.png";
 
+const starOptions = {
+  '5star': '⭐⭐⭐⭐⭐',
+  '4stars': '⭐⭐⭐⭐',
+  '3stars': '⭐⭐⭐',
+  '2stars': '⭐⭐',
+  '1star': '⭐'
+};
+
 const CommentSystem = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [author, setAuthor] = useState('');
+  const [showAllComments, setShowAllComments] = useState(false);
+  const [rating, setRating] = useState('5star');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,12 +24,17 @@ const CommentSystem = () => {
       id: Date.now(),
       text: newComment,
       author: author || 'Anonymous',
-      date: new Date().toLocaleString()
+      date: new Date().toLocaleString(),
+      ProfilePicture: avatar,
+      rating: rating, 
+      stars: starOptions[rating] 
     };
     
     setComments([...comments, comment]);
     setNewComment('');
   };
+
+  const displayedComments = showAllComments ? comments : comments.slice(0, 3);
 
   return (
     <div className="comment-system">
@@ -47,6 +62,22 @@ const CommentSystem = () => {
             required
           />
         </div>
+
+        <div className="form-group">
+          <label htmlFor="rating">Rating</label>
+          <select 
+            id="rating" 
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+            required
+          >
+            <option value="5star">⭐⭐⭐⭐⭐</option>
+            <option value="4stars">⭐⭐⭐⭐</option>
+            <option value="3stars">⭐⭐⭐</option>
+            <option value="2stars">⭐⭐</option>
+            <option value="1star">⭐</option>
+          </select>
+        </div>
         
         <button type="submit">Postear comentario</button>
       </form>
@@ -55,16 +86,28 @@ const CommentSystem = () => {
         {comments.length === 0 ? (
           <p>No hay comentarios, se el primero en subir un comentario!!</p>
         ) : (
-          comments.map(comment => (
-            <div key={comment.id} className="comment">
+          <>
+            {displayedComments.map(comment => (
+              <div key={comment.id} className="comment">
                 <div className="comment-meta">
-                <div className="comment-date">{comment.date}</div>
-                
-                <div className="comment-author"> <img src= {avatar} alt="" /> {comment.author}: {comment.text}</div>
-              
+                  <div className="comment-date">{comment.date}</div>
+                  <div className="comment-author"> 
+                    <img src={comment.ProfilePicture} alt="" /> 
+                    {comment.author}: {comment.text}
+                  </div>
+                  <div className="comment-stars">{comment.stars}</div>
+                </div>
               </div>
-            </div>
-          ))
+            ))}
+            {comments.length > 3 && !showAllComments && (
+              <button 
+                onClick={() => setShowAllComments(true)}
+                className="show-more-btn"
+              >
+                Mostrar más comentarios
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

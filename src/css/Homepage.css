@@ -59,7 +59,6 @@
     text-align: center;
 }
 /* Estilo de la sección de comentarios */
-/* Comment System Styling */
 .comments-section {
   max-width: 1200px;
   margin: 50px auto;
@@ -110,10 +109,23 @@
   border: 2px solid white;
 }
 
-/* Responsive adjustments */
+/* ajustes */
 @media (max-width: 768px) {
   .comments-section {
     margin: 30px 15px;
     padding: 15px;
   }
+}
+/*Mostrar mas*/
+.show-more-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #503e3e;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  background-color: #e0e0e0;
 }
