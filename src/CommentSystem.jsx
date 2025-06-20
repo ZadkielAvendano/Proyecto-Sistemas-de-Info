@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import avatar from "./assets/unimet_logo.png";
 
 const CommentSystem = () => {
   const [comments, setComments] = useState([]);
@@ -58,8 +59,9 @@ const CommentSystem = () => {
             <div key={comment.id} className="comment">
                 <div className="comment-meta">
                 <div className="comment-date">{comment.date}</div>
-                <div className="comment-author">{comment.author}: {comment.text}</div>
-
+                
+                <div className="comment-author"> <img src= {avatar} alt="" /> {comment.author}: {comment.text}</div>
+              
               </div>
             </div>
           ))

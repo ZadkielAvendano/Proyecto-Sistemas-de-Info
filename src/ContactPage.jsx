@@ -60,7 +60,7 @@ export default function ContactPage() {
       <div className="map-container">
         <h2>Ubicación en el Campus</h2>
         <div className="map-placeholder">
-          {/* Replace with actual map embed code */}
+          {/* Poner el codigo de google maps con la ubicacion de la universidad acá */}
           <p>Mapa de Google Maps aparecerá aquí</p>
         </div>
       </div>
