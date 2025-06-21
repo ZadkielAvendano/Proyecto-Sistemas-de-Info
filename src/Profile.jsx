@@ -2,12 +2,11 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from './context/UserContext';
 import { supabase } from './config/supabase';
 import { useNavigate } from 'react-router';
-import './css/Profile.css';
 
 export default function Profile() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     nombre: '',
@@ -46,9 +45,17 @@ export default function Profile() {
   };
 
   const handleSave = async () => {
+    if (!formData.nombre.trim() || !formData.apellido.trim()) {
+      alert('Nombre y apellido no pueden estar vacíos.');
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.updateUser({
-        data: { ...formData },
+        data: {
+          ...formData,
+          display_name: `${formData.nombre} ${formData.apellido}`,
+        },
       });
 
       if (error) throw error;
@@ -56,7 +63,7 @@ export default function Profile() {
       if (data.user) {
         setUser(data.user);
       }
-      
+
       setIsEditing(false);
       alert('Perfil actualizado con éxito');
     } catch (error) {
@@ -64,90 +71,166 @@ export default function Profile() {
       alert('Error al actualizar el perfil.');
     }
   };
-  
+
   const handleCancel = () => {
     setIsEditing(false);
     if (user) {
-        setFormData({
-            nombre: user.user_metadata?.nombre || '',
-            apellido: user.user_metadata?.apellido || '',
-            preferencia: user.user_metadata?.preferencia || '',
-        });
+      setFormData({
+        nombre: user.user_metadata?.nombre || '',
+        apellido: user.user_metadata?.apellido || '',
+        preferencia: user.user_metadata?.preferencia || '',
+      });
     }
-  }
+  };
 
   return (
-    <div className="profile-container">
-      <h1>Mi Perfil</h1>
-      <p className="profile-subtitle">Gestiona tu información personal</p>
-      
+    <div
+      className="profile-container"
+      style={{
+        maxWidth: '600px',
+        margin: '2rem auto',
+        background: '#fff',
+        padding: '2rem',
+        borderRadius: '12px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+      }}
+    >
+      <h1 style={{ color: '#007bff', fontSize: '28px', marginBottom: '1rem' }}>Mi Perfil</h1>
+      <p style={{ marginBottom: '2rem', color: '#555' }}>Gestiona tu información personal</p>
+
       <div className="profile-form">
-        <div className="form-group">
-          <label>NOMBRE:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-              className="input-field-edit"
-            />
-          ) : (
-            <div className="input-field">{user?.user_metadata?.nombre || ''}</div>
-          )}
+        {['nombre', 'apellido', 'preferencia'].map((field) => (
+          <div className="form-group" key={field} style={{ marginBottom: '1rem' }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: '0.3rem',
+                color: '#333',
+              }}
+            >
+              {field.toUpperCase()}:
+            </label>
+            {isEditing ? (
+              <input
+                type="text"
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                className="input-field-edit"
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: '6px',
+                  border: '1px solid #ccc',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  background: '#f1f1f1',
+                  padding: '10px',
+                  borderRadius: '6px',
+                  color: '#333',
+                }}
+              >
+                {user?.user_metadata?.[field] || '—'}
+              </div>
+            )}
+          </div>
+        ))}
+
+        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+          <label
+            style={{
+              display: 'block',
+              fontWeight: 'bold',
+              marginBottom: '0.3rem',
+              color: '#333',
+            }}
+          >
+            EMAIL:
+          </label>
+          <div
+            style={{
+              background: '#f1f1f1',
+              padding: '10px',
+              borderRadius: '6px',
+              color: '#333',
+            }}
+          >
+            {user?.email || ''}
+          </div>
         </div>
 
-        <div className="form-group">
-          <label>APELLIDO:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="apellido"
-              value={formData.apellido}
-              onChange={handleChange}
-              className="input-field-edit"
-            />
-          ) : (
-            <div className="input-field">{user?.user_metadata?.apellido || ''}</div>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>EMAIL:</label>
-          <div className="input-field">{user?.email || ''}</div>
-        </div>
-
-        <div className="form-group">
-          <label>PREFERENCIA:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="preferencia"
-              value={formData.preferencia}
-              onChange={handleChange}
-              className="input-field-edit"
-            />
-          ) : (
-            <div className="input-field">{user?.user_metadata?.preferencia || ''}</div>
-          )}
-        </div>
-
-        <div className="button-group">
+        <div
+          className="button-group"
+          style={{
+            display: 'flex',
+            gap: '10px',
+            justifyContent: 'flex-end',
+            marginTop: '1rem',
+          }}
+        >
           {isEditing ? (
             <>
-              <button className="save-button" onClick={handleSave}>
+              <button
+                className="save-button"
+                onClick={handleSave}
+                style={{
+                  backgroundColor: '#007bff',
+                  color: '#fff',
+                  padding: '10px 16px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
                 Guardar
               </button>
-              <button className="cancel-button" onClick={handleCancel}>
+              <button
+                className="cancel-button"
+                onClick={handleCancel}
+                style={{
+                  backgroundColor: '#ccc',
+                  color: '#333',
+                  padding: '10px 16px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
                 Cancelar
               </button>
             </>
           ) : (
             <>
-              <button className="edit-button" onClick={handleEditToggle}>
+              <button
+                className="edit-button"
+                onClick={handleEditToggle}
+                style={{
+                  backgroundColor: '#ff8800',
+                  color: '#fff',
+                  padding: '10px 16px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
                 Editar Perfil
               </button>
-              <button className="logout-button" onClick={handleSignOut}>
+              <button
+                className="logout-button"
+                onClick={handleSignOut}
+                style={{
+                  backgroundColor: '#dc3545',
+                  color: '#fff',
+                  padding: '10px 16px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
                 Cerrar Sesión
               </button>
             </>
