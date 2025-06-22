@@ -51,14 +51,14 @@ export default function Navbar() {
       <div className="logo">
         <Link to="/"><img src={unimetLogo} alt="Unimet Logo" /></Link>
       </div>
-
+      
       <div className="nav-wrapper">
         <nav className={`navbar ${menuOpen? "active" : ""}`}>
           <ul>
             <li><Link onClick={() => handleAction("/")}>Espacios</Link></li>
             <li><Link onClick={() => handleAction("/")}>Calendarios</Link></li>
             <li><Link onClick={() => handleAction("/")}>Reservas</Link></li>
-            <li><Link onClick={() => handleAction("/")}>Contacto</Link></li>
+            <li><Link onClick={() => handleAction("/contacto")}>Contacto</Link></li>
             
             {!sesionActiva && (
               <>

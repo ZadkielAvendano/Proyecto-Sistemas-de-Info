@@ -60,6 +60,69 @@
     text-align: center;
 }
 
+.comments-section {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.comments-section h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.comments-section p {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 30px;
+}
+
+.comment {
+  background-color: #3498db;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+.comment-meta {
+  color: white;
+}
+
+.comment-date {
+  color: rgba(255,255,255,0.8);
+}
+
+.comment-author {
+  color: white;
+}
+
+.comment-meta img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+/*Mostrar mas*/
+.show-more-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #503e3e;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  background-color: #e0e0e0;
+
 @media (max-width: 768px) {
   .articulo_1 {
     flex-direction: column;
@@ -94,5 +157,10 @@
 
   .articulo_2 p{
     font-size: 1rem;
+  }
+  
+  .comments-section {
+    margin: 30px 15px;
+    padding: 15px;
   }
 }

@@ -5,7 +5,8 @@ import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
 import "./css/Homepage.css"
-   
+import CommentSystem from "./CommentSystem"; 
+
 export default function Homepage() {
   const [sesionActiva, setSesionActiva] = useState(false);
   const navigate = useNavigate();
@@ -84,7 +85,14 @@ export default function Homepage() {
           {sesionActiva ? "Reservar ahora" : "Registrarse"}
         </button>
       </article>
+  
+      {/* añade la sección de comentarios */}
+      <section className="comments-section">
+        <h2>Comentarios y Feedback</h2>
+        <p>Déjanos saber tu opinión sobre el sistema de reservas</p>
+        <CommentSystem />
+      </section>
     </>
-        
+
   )
 }
