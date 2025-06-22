@@ -1,0 +1,167 @@
+.articulo_1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 30px;
+    padding-left: 5%;
+    padding-right: 5%;
+    gap: 3rem;
+    align-items: stretch;
+    font-size: 1.5rem;
+}
+
+.articulo_1 h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+
+.articulo_1 li {
+    font-size: 1.2rem;
+}
+
+.articulo_1 div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.articulo_1 img {
+    flex: 1;
+    max-width: 50%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 2rem;
+}
+
+.articulo_2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 30px;
+    padding-left: 15%;
+    padding-right: 15%;
+    gap: 3rem;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: var(--container_primary);
+    color: var(--font_color_on_surface);
+}
+
+.articulo_2 h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.articulo_2 p {
+    text-align: center;
+}
+
+.comments-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.comments-section p {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+}
+
+.comment {
+    background-color: #3498db;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.comment-meta {
+    color: white;
+}
+
+.comment-date {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.comment-author {
+    color: white;
+}
+
+.comment-meta img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+/*Mostrar mas*/
+.show-more-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #503e3e;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.show-more-btn:hover {
+    background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .articulo_1 {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .articulo_1>img {
+        order: -1;
+        max-width: 90%;
+        margin-bottom: 1.5rem;
+    }
+
+    .articulo_1>div {
+        padding: 0;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .articulo_1 h1 {
+        font-size: 2.2rem;
+    }
+
+    .articulo_1 p,
+    .articulo_1 ul {
+        font-size: 1.1rem;
+    }
+
+    .articulo_2 h1 {
+        font-size: 2rem;
+    }
+
+    .articulo_2 p {
+        font-size: 1rem;
+    }
+
+    .comments-section {
+        margin: 30px 15px;
+        padding: 15px;
+    }
+}
