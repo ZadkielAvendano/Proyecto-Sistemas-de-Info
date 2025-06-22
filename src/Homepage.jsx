@@ -1,4 +1,6 @@
-import Navbar from "./Navbar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { verificar_sesion } from "./utils";
 import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
@@ -6,6 +8,26 @@ import "./css/Homepage.css"
 import CommentSystem from "./CommentSystem"; 
 
 export default function Homepage() {
+  const [sesionActiva, setSesionActiva] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function cargarSesion() {
+      const activa = await verificar_sesion();
+      setSesionActiva(activa);
+    }
+
+    cargarSesion();
+  }, []);
+
+  function handleAction(link) {
+    if (sesionActiva) {
+      navigate(link);
+    } else {
+      navigate("/login");
+    }
+  }
+
   return (
     <>
       {/*Articulo N-1*/}
@@ -15,7 +37,9 @@ export default function Homepage() {
           <p>Encuentra, reserva y gestiona los espacios académicos de tu universidad en minutos.
             Plataforma oficial para reservar espacios en la Universidad Metropolitana.
             Disfruta de un proceso rápido, seguro y diseñado para estudiantes.</p>
-          <button>Registrate</button>
+          <button onClick={() => handleAction("/")}>
+            {sesionActiva ? "Reservar ahora" : "Registrarse"}
+          </button>
         </div>
         <img src={imagen_1} alt="" />
       </article>
@@ -31,7 +55,9 @@ export default function Homepage() {
             <li><strong>Calendario:</strong> Visualiza tus reservas y evita conflictos de horario.</li>
             <li><strong>Soporte 24/7:</strong> Asistencia técnica para resolver problemas rápidamente.</li>
           </ul>
-          <button>Registrate</button>
+          <button onClick={() => handleAction("/")}>
+            {sesionActiva ? "Ver espacios" : "Registrarse"}
+          </button>
         </div>
       </article>
 
@@ -44,7 +70,7 @@ export default function Homepage() {
             <li>Conferencias magistrales en auditorios equipados</li>
             <li>Talleres especializados por facultad.</li>
             <li>Exposiciones de proyectos.</li>
-            <li>Eventos culturales en áreas comunes adaptables.</li>
+            <li>Eventos culturales en áreas comunes adaptables.</li>
           </ul>
         </div>
         <img src={imagen_3} alt="" />
@@ -55,7 +81,9 @@ export default function Homepage() {
         <h1>Acceso Multiplataforma</h1>
         <p>El sistema de reservas UNIMET es responsive, lo que significa que se adapta automáticamente a cualquier dispositivo: celulares,
           tablets o computadoras. Puedes reservar espacios desde tu teléfono con la misma facilidad que desde una laptop, sin perder funcionalidad.</p>
-        <button>Reservar ahora</button>
+        <button onClick={() => handleAction("/")}>
+          {sesionActiva ? "Reservar ahora" : "Registrarse"}
+        </button>
       </article>
   
       {/* añade la sección de comentarios */}

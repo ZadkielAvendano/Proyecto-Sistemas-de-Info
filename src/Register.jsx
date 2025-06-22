@@ -1,12 +1,31 @@
-import  { useState } from "react";
-import {supabase} from './config/supabase';
+//  Importaciones necesarias
+import { useState, useEffect } from "react";
+import { supabase } from "./config/supabase";
 import { useNavigate } from "react-router";
-export default function Register() {
-    const navigate = useNavigate();
-    const [message, setMessage] = useState('mensaje de registro');
-    const [form, setForm] = useState({email: '', password: ''
-  });
+import "./css/Register.css";
 
+export default function Register() {
+  //  Estados locales
+  const navigate = useNavigate();
+  const [message, setMessage] = useState("Registro");
+  const [form, setForm] = useState({ email: "", password: "", nombre: "", apellido: "" });
+
+  //  Comprobación de sesión activa
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate("/");
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session) navigate("/");
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, [navigate]);
+
+  //  Manejadores de eventos
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -15,30 +34,69 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-    const { data, error } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password 
-    })
-    if (error){
-        setMessage(`Error al verificar el correo: ${error.message}`);
-            return;
-    };
-    if (data) {
-        
-        setForm({
-            email: '',
-            password: ''
-        });
-        navigate('/login');
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          nombre: form.nombre,
+          apellido: form.apellido,
+          display_name: `${form.nombre} ${form.apellido}`,
+        }
+      }
+    });
+    if (error) {
+      setMessage(`Error al registrar: ${error.message}`);
+      return;
+    }
+    setForm({ email: "", password: "", nombre: "", apellido: "" });
+    navigate("/login");
+  };
+
+  const handleGoogleRegister = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    if (error) {
+      console.error("Error con Google:", error.message);
+      setMessage(`Error con Google: ${error.message}`);
     }
   };
 
+  //  Renderizado de la interfaz de usuario
   return (
-    <div style={{ maxWidth: 400, margin: "2rem auto", padding: 24, border: "1px solid #ccc", borderRadius: 8 }}>
-        <h1>{message}</h1>
-      <h2>Registro</h2>
+    <div className="register-container">
+      <h1 className="register-title">{message}</h1>
+      <h2 className="register-subtitle">Regístrate para reservar el espacio adaptado a ti.</h2>
+
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
+        <div className="input-group">
+          <label htmlFor="nombre">Nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            required
+            className="input-field"
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="apellido">Apellido</label>
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            value={form.apellido}
+            onChange={handleChange}
+            required
+            className="input-field"
+          />
+        </div>
+
+        <div className="input-group">
           <label htmlFor="email">Correo electrónico</label>
           <input
             type="email"
@@ -47,10 +105,11 @@ export default function Register() {
             value={form.email}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            className="input-field"
           />
         </div>
-        <div style={{ marginBottom: 16 }}>
+
+        <div className="input-group">
           <label htmlFor="password">Contraseña</label>
           <input
             type="password"
@@ -59,14 +118,25 @@ export default function Register() {
             value={form.password}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            className="input-field"
           />
         </div>
-        <button type="submit" style={{ width: "100%", padding: 10, background: "#007bff", color: "white", border: "none", borderRadius: 4 }}>
+
+        <button type="submit" className="submit-button">
           Registrarse
         </button>
       </form>
+
+      <hr style={{ margin: "1.5rem 0" }} />
+
+      <button onClick={handleGoogleRegister} className="google-button">
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google"
+          className="google-logo"
+        />
+        Registrarse con Google
+      </button>
     </div>
   );
 }
-
