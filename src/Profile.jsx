@@ -2,6 +2,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from './context/UserContext';
 import { supabase } from './config/supabase';
+import { verificar_sesion } from "./utils";
 import { useNavigate } from 'react-router';
 import './css/Profile.css';
 
@@ -18,6 +19,15 @@ export default function Profile() {
 
   //  Cargar datos del usuario cuando el componente se monta
   useEffect(() => {
+    async function inicializarSesion() {
+      const activa = await verificar_sesion();
+      if (!activa) {
+        navigate("/login");
+      }
+    }
+
+    inicializarSesion();
+
     if (user) {
       setFormData({
         nombre: user.user_metadata?.nombre || '',
