@@ -1,12 +1,14 @@
+// Importaciones necesarias
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from './context/UserContext';
 import { supabase } from './config/supabase';
 import { useNavigate } from 'react-router';
+import './css/Profile.css';
 
 export default function Profile() {
+  //  Estados locales
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     nombre: '',
@@ -14,6 +16,7 @@ export default function Profile() {
     preferencia: '',
   });
 
+  //  Cargar datos del usuario cuando el componente se monta
   useEffect(() => {
     if (user) {
       setFormData({
@@ -24,6 +27,7 @@ export default function Profile() {
     }
   }, [user]);
 
+  //  Manejadores de sesión y edición
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -59,10 +63,7 @@ export default function Profile() {
       });
 
       if (error) throw error;
-
-      if (data.user) {
-        setUser(data.user);
-      }
+      if (data.user) setUser(data.user);
 
       setIsEditing(false);
       alert('Perfil actualizado con éxito');
@@ -83,34 +84,16 @@ export default function Profile() {
     }
   };
 
+  //  Renderizado de la interfaz de usuario
   return (
-    <div
-      className="profile-container"
-      style={{
-        maxWidth: '600px',
-        margin: '2rem auto',
-        background: '#fff',
-        padding: '2rem',
-        borderRadius: '12px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-      }}
-    >
-      <h1 style={{ color: '#007bff', fontSize: '28px', marginBottom: '1rem' }}>Mi Perfil</h1>
-      <p style={{ marginBottom: '2rem', color: '#555' }}>Gestiona tu información personal</p>
+    <div className="profile-container">
+      <h1>Mi Perfil</h1>
+      <p className="profile-subtitle">Gestiona tu información personal</p>
 
       <div className="profile-form">
         {['nombre', 'apellido', 'preferencia'].map((field) => (
-          <div className="form-group" key={field} style={{ marginBottom: '1rem' }}>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: '0.3rem',
-                color: '#333',
-              }}
-            >
-              {field.toUpperCase()}:
-            </label>
+          <div className="form-group" key={field}>
+            <label>{field.toUpperCase()}:</label>
             {isEditing ? (
               <input
                 type="text"
@@ -118,119 +101,36 @@ export default function Profile() {
                 value={formData[field]}
                 onChange={handleChange}
                 className="input-field-edit"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid #ccc',
-                }}
               />
             ) : (
-              <div
-                style={{
-                  background: '#f1f1f1',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  color: '#333',
-                }}
-              >
+              <div className="input-field">
                 {user?.user_metadata?.[field] || '—'}
               </div>
             )}
           </div>
         ))}
 
-        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-          <label
-            style={{
-              display: 'block',
-              fontWeight: 'bold',
-              marginBottom: '0.3rem',
-              color: '#333',
-            }}
-          >
-            EMAIL:
-          </label>
-          <div
-            style={{
-              background: '#f1f1f1',
-              padding: '10px',
-              borderRadius: '6px',
-              color: '#333',
-            }}
-          >
-            {user?.email || ''}
-          </div>
+        <div className="form-group">
+          <label>EMAIL:</label>
+          <div className="input-field">{user?.email || ''}</div>
         </div>
 
-        <div
-          className="button-group"
-          style={{
-            display: 'flex',
-            gap: '10px',
-            justifyContent: 'flex-end',
-            marginTop: '1rem',
-          }}
-        >
+        <div className="button-group">
           {isEditing ? (
             <>
-              <button
-                className="save-button"
-                onClick={handleSave}
-                style={{
-                  backgroundColor: '#007bff',
-                  color: '#fff',
-                  padding: '10px 16px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                }}
-              >
+              <button className="save-button" onClick={handleSave}>
                 Guardar
               </button>
-              <button
-                className="cancel-button"
-                onClick={handleCancel}
-                style={{
-                  backgroundColor: '#ccc',
-                  color: '#333',
-                  padding: '10px 16px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                }}
-              >
+              <button className="cancel-button" onClick={handleCancel}>
                 Cancelar
               </button>
             </>
           ) : (
             <>
-              <button
-                className="edit-button"
-                onClick={handleEditToggle}
-                style={{
-                  backgroundColor: '#ff8800',
-                  color: '#fff',
-                  padding: '10px 16px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                }}
-              >
+              <button className="edit-button" onClick={handleEditToggle}>
                 Editar Perfil
               </button>
-              <button
-                className="logout-button"
-                onClick={handleSignOut}
-                style={{
-                  backgroundColor: '#dc3545',
-                  color: '#fff',
-                  padding: '10px 16px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                }}
-              >
+              <button className="logout-button" onClick={handleSignOut}>
                 Cerrar Sesión
               </button>
             </>
