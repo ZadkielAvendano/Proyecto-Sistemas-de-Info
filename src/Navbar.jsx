@@ -1,13 +1,31 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { supabase } from './config/supabase';
+import { verificar_sesion } from "./utils";
 import unimetLogo from "./assets/unimet_logo.png";
 import "./css/Header.css";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [sesionActiva, setSesionActiva] = useState(false);
+
+  useEffect(() => {
+    async function inicializarSesion() {
+      const activa = await verificar_sesion();
+      setSesionActiva(activa);
+    }
+
+    inicializarSesion();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSesionActiva(!!session);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +41,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  function handleAction(link) {
+    navigate(link);
+    setMenuOpen(false);
+  }
+
   return (
     <header className={`header ${showHeader ? "visible" : "hidden"}`}>
       <div className="logo">
@@ -32,13 +55,22 @@ export default function Navbar() {
       <div className="nav-wrapper">
         <nav className={`navbar ${menuOpen? "active" : ""}`}>
           <ul>
-            <li><Link>Espacios</Link></li>
-            <li><Link>Calendarios</Link></li>
-            <li><Link>Reservas</Link></li>
-            <li><Link>Contacto</Link></li>
-            <li id="login_button"><Link to='/login'><button>Iniciar Sesion</button></Link></li>
-            <li id="register_button" className="secondary_button"><Link to='/register'><button>Registrarse</button></Link></li>
-            <li id="profile_button"><Link to='/profile'><button>Perfil</button></Link></li>
+            <li><Link onClick={() => handleAction("/")}>Espacios</Link></li>
+            <li><Link onClick={() => handleAction("/")}>Calendarios</Link></li>
+            <li><Link onClick={() => handleAction("/")}>Reservas</Link></li>
+            <li><Link onClick={() => handleAction("/")}>Contacto</Link></li>
+            
+            {!sesionActiva && (
+              <>
+                <li><button onClick={() => handleAction("/login")}>Iniciar Sesión</button></li>
+                <li className="secondary_button"><button onClick={() => handleAction("/register")}>Registrarse</button></li>
+              </>
+            )}
+
+            {sesionActiva && (
+              <li><button onClick={() => handleAction("/profile")}>Perfil</button></li>
+            )}
+
           </ul>
         </nav>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>

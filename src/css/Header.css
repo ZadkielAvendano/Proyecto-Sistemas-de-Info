@@ -38,18 +38,6 @@
     transition: all 0.3s ease-in-out;
 }
 
-#login_button {
-    display: block;
-}
-
-#register_button {
-    display: block;
-}
-
-#profile_button {
-    display: none;
-}
-
 .menu-toggle {
     background: none;
     border: none;

@@ -1,13 +1,23 @@
-import Navbar from "./Navbar";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { verificar_sesion } from "./utils";
 import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
 import "./css/Homepage.css"
    
 export default function Homepage() {
-  const sesionActiva = false;
-  const navigate = useNavigate()
+  const [sesionActiva, setSesionActiva] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function cargarSesion() {
+      const activa = await verificar_sesion();
+      setSesionActiva(activa);
+    }
+
+    cargarSesion();
+  }, []);
 
   function handleAction(link) {
     if (sesionActiva) {
@@ -16,7 +26,6 @@ export default function Homepage() {
       navigate("/login");
     }
   }
-
 
   return (
     <>
