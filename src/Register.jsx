@@ -1,13 +1,16 @@
+//  Importaciones necesarias
 import { useState, useEffect } from "react";
 import { supabase } from "./config/supabase";
 import { useNavigate } from "react-router";
+import "./css/Register.css";
 
 export default function Register() {
+  //  Estados locales
   const navigate = useNavigate();
   const [message, setMessage] = useState("Registro");
-  const [form, setForm] = useState({ email: "", password: "",nombre:"",apellido: ""});
+  const [form, setForm] = useState({ email: "", password: "", nombre: "", apellido: "" });
 
-  // Detectar sesión activa (por ejemplo, si regresa de Google)
+  //  Comprobación de sesión activa
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate("/");
@@ -22,6 +25,7 @@ export default function Register() {
     return () => listener.subscription.unsubscribe();
   }, [navigate]);
 
+  //  Manejadores de eventos
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -45,7 +49,7 @@ export default function Register() {
       setMessage(`Error al registrar: ${error.message}`);
       return;
     }
-    setForm({ email: "", password: "", nombre: "", apellido: ""});
+    setForm({ email: "", password: "", nombre: "", apellido: "" });
     navigate("/login");
   };
 
@@ -59,60 +63,53 @@ export default function Register() {
     }
   };
 
+  //  Renderizado de la interfaz de usuario
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "2rem auto",
-        padding: 24,
-        border: "1px solid #ccc",
-        borderRadius: 8,
-      }}
-    >
-      <h1>{message}</h1>
-      <h2>Regístrate para reservar el espacio adaptado a ti.</h2>
+    <div className="register-container">
+      <h1 className="register-title">{message}</h1>
+      <h2 className="register-subtitle">Regístrate para reservar el espacio adaptado a ti.</h2>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
-        <label htmlFor="nombre">Nombre</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          required
-          style={{ width: "100%", padding: 8, marginTop: 4 }}
-        />
-      </div>
+        <div className="input-group">
+          <label htmlFor="nombre">Nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            required
+            className="input-field"
+          />
+        </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <label htmlFor="apellido">Apellido</label>
-        <input
-          type="text"
-          id="apellido"
-          name="apellido"
-          value={form.apellido}
-          onChange={handleChange}
-          required
-          style={{ width: "100%", padding: 8, marginTop: 4 }}
-        />
-      </div>
+        <div className="input-group">
+          <label htmlFor="apellido">Apellido</label>
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            value={form.apellido}
+            onChange={handleChange}
+            required
+            className="input-field"
+          />
+        </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <label htmlFor="email">Correo electrónico</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          style={{ width: "100%", padding: 8, marginTop: 4 }}
-        />
-      </div>
+        <div className="input-group">
+          <label htmlFor="email">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="input-field"
+          />
+        </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="input-group">
           <label htmlFor="password">Contraseña</label>
           <input
             type="password"
@@ -121,50 +118,22 @@ export default function Register() {
             value={form.password}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            className="input-field"
           />
         </div>
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: 10,
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: 4,
-          }}
-        >
+        <button type="submit" className="submit-button">
           Registrarse
         </button>
       </form>
 
       <hr style={{ margin: "1.5rem 0" }} />
 
-      <button
-        onClick={handleGoogleRegister}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "12px",
-          width: "100%",
-          padding: "10px 16px",
-          backgroundColor: "white",
-          color: "#3c4043",
-          border: "1px solid #dadce0",
-          borderRadius: "6px",
-          fontSize: "14px",
-          fontWeight: 500,
-          boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
-          cursor: "pointer",
-        }}
-      >
+      <button onClick={handleGoogleRegister} className="google-button">
         <img
           src="https://developers.google.com/identity/images/g-logo.png"
           alt="Google"
-          style={{ width: 20, height: 20 }}
+          className="google-logo"
         />
         Registrarse con Google
       </button>

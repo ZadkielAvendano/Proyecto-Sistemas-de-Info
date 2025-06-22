@@ -1,15 +1,16 @@
+// Importaciones necesarias
 import { useState, useEffect } from "react";
 import { supabase } from "./config/supabase";
 import { useNavigate } from "react-router";
+import "./css/Login.css";
 
 export default function Login() {
+  // Estados locales
   const navigate = useNavigate();
   const [message, setMessage] = useState("Bienvenido, inicia sesión");
   const [form, setForm] = useState({ email: "", password: "" });
 
-  /* ─────────────────────────────────────────────
-     1) Redirige si ya hay sesión o si vuelve de Google
-  ───────────────────────────────────────────── */
+  // Comprobación de sesión activa
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate("/");
@@ -24,9 +25,7 @@ export default function Login() {
     return () => listener.subscription.unsubscribe();
   }, [navigate]);
 
-  /* ─────────────────────────────────────────────
-     2) Login con email / contraseña
-  ───────────────────────────────────────────── */
+  // Manejadores de eventos
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -41,34 +40,20 @@ export default function Login() {
     setMessage("Login exitoso, redirigiendo...");
   };
 
-  /* ─────────────────────────────────────────────
-     3) Login con Google
-  ───────────────────────────────────────────── */
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
     if (error) setMessage(`Error con Google: ${error.message}`);
-    // No navegamos aquí: el redirect lo hace Google ➔ /auth/v1/callback
   };
 
-  /* ─────────────────────────────────────────────
-     4) UI
-  ───────────────────────────────────────────── */
+  // Renderizado de la interfaz de usuario
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "2rem auto",
-        padding: 24,
-        border: "1px solid #ccc",
-        borderRadius: 8,
-      }}
-    >
-      <h1 style={{ fontSize: 18, marginBottom: 12 }}>{message}</h1>
+    <div className="login-container">
+      <h1 className="login-title">{message}</h1>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
+        <div className="input-group">
           <label>Correo electrónico</label>
           <input
             type="email"
@@ -76,11 +61,11 @@ export default function Login() {
             value={form.email}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            className="input-field"
           />
         </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="input-group">
           <label>Contraseña</label>
           <input
             type="password"
@@ -88,50 +73,22 @@ export default function Login() {
             value={form.password}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            className="input-field"
           />
         </div>
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: 10,
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: 4,
-          }}
-        >
+        <button type="submit" className="submit-button">
           Login
         </button>
       </form>
 
       <hr style={{ margin: "1.5rem 0" }} />
 
-      <button
-        onClick={handleGoogleLogin}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "12px",
-          width: "100%",
-          padding: "10px 16px",
-          backgroundColor: "white",
-          color: "#3c4043",
-          border: "1px solid #dadce0",
-          borderRadius: "6px",
-          fontSize: "14px",
-          fontWeight: 500,
-          boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
-          cursor: "pointer",
-        }}
-      >
+      <button onClick={handleGoogleLogin} className="google-button">
         <img
           src="https://developers.google.com/identity/images/g-logo.png"
           alt="Google"
-          style={{ width: 20, height: 20 }}
+          className="google-logo"
         />
         Iniciar Sesión con Google
       </button>
