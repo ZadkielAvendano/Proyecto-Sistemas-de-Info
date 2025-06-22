@@ -1,10 +1,20 @@
+/* GENERAL */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
 .profile-container {
   max-width: 800px;
+  width: 100%;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 h1 {
@@ -32,6 +42,7 @@ h1 {
   gap: 1rem;
   padding: 0.5rem;
   border-radius: 4px;
+  flex-wrap: wrap;
 }
 
 .form-group label {
@@ -48,6 +59,8 @@ h1 {
   min-height: 2.5rem;
   display: flex;
   align-items: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .input-field-edit {
@@ -56,6 +69,7 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  width: 100%;
 }
 
 .button-group {
@@ -63,17 +77,24 @@ h1 {
   gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
-.edit-button {
+.edit-button,
+.logout-button,
+.save-button,
+.cancel-button {
   padding: 0.5rem 2rem;
-  background-color: #3182ce;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s;
+}
+
+.edit-button {
+  background-color: #3182ce;
 }
 
 .edit-button:hover {
@@ -81,14 +102,7 @@ h1 {
 }
 
 .logout-button {
-  padding: 0.5rem 2rem;
   background-color: #e53e3e;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
 }
 
 .logout-button:hover {
@@ -96,14 +110,7 @@ h1 {
 }
 
 .save-button {
-  padding: 0.5rem 2rem;
   background-color: #38a169;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
 }
 
 .save-button:hover {
@@ -111,16 +118,40 @@ h1 {
 }
 
 .cancel-button {
-  padding: 0.5rem 2rem;
   background-color: #718096;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
 }
 
 .cancel-button:hover {
   background-color: #4a5568;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-group label {
+    width: 100%;
+    min-width: unset;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-field,
+  .input-field-edit {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-button,
+  .logout-button,
+  .save-button,
+  .cancel-button {
+    width: 100%;
+  }
 }
