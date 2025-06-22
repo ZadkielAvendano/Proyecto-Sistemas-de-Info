@@ -42,23 +42,25 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   function handleAction(link) {
-    navigate(link);
+    if (link != "") {
+      navigate(link);
+    }
     setMenuOpen(false);
   }
 
   return (
     <header className={`header ${showHeader ? "visible" : "hidden"}`}>
       <div className="logo">
-        <Link to="/"><img src={unimetLogo} alt="Unimet Logo" /></Link>
+        <Link to="/" onClick={() => handleAction()}><img src={unimetLogo} alt="Unimet Logo" /></Link>
       </div>
       
       <div className="nav-wrapper">
         <nav className={`navbar ${menuOpen? "active" : ""}`}>
           <ul>
-            <li><Link onClick={() => handleAction("/")}>Espacios</Link></li>
-            <li><Link onClick={() => handleAction("/")}>Calendarios</Link></li>
-            <li><Link onClick={() => handleAction("/")}>Reservas</Link></li>
-            <li><Link onClick={() => handleAction("/contacto")}>Contacto</Link></li>
+            <li><Link to="/" onClick={() => handleAction()}>Espacios</Link></li>
+            <li><Link to="/" onClick={() => handleAction()}>Calendarios</Link></li>
+            <li><Link to="/" onClick={() => handleAction()}>Reservas</Link></li>
+            <li><Link to="/contact" onClick={() => handleAction()}>Contacto</Link></li>
             
             {!sesionActiva && (
               <>
