@@ -30,7 +30,7 @@ function App() {
           element: <Profile/>
         },
       {
-          path: '/contacto', 
+          path: '/contact', 
           element: <ContactPage />
         },
       ]}
