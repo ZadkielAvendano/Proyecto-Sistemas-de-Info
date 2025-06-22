@@ -31,6 +31,7 @@ body{
 
 .main-content {
     flex: 1; /* Permite que el contenido ocupe el espacio disponible */
+    padding-top: 100px;
 }
 
 .footer {
@@ -69,36 +70,8 @@ button:active {
     background-color: var(--secondary);
 }
 
-
-.header{
-    background-color: var(--container_primary);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-    color: var(--font_color_on_surface);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
-    height: 100px;
-    width: 100%;
-    margin: 0 auto;
-    font-size: 16px;
-}
-
-.header a{
-    color: var(--font_color_on_surface);
-    text-decoration: none;
-}
-
 .logo img{
     height: 6rem;
-}
-
-.navbar ul{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-    gap: 25px;
 }
 
 .footer{
