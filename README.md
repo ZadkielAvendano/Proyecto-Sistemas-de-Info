@@ -1,12 +1,27 @@
-# React + Vite
+# Reservas de espacios UNIMET
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Plataforma web oficial para la reserva y gestión de espacios académicos y culturales en la Universidad Metropolitana (UNIMET). Diseñada para brindar una experiencia rápida, accesible y segura a estudiantes, docentes y personal administrativo.
 
-Currently, two official plugins are available:
+## 🚀 Funcionalidades Principales
+- 🔍 Búsqueda inteligente: Filtrado por espacio, capacidad, horario y equipamiento.
+- 🗓️ Reserva en tiempo real: Confirmación instantánea de espacios disponibles.
+- 📅 Calendario integrado: Visualización clara de tus reservas y disponibilidad.
+- 🧑‍💻 Soporte 24/7: Asistencia técnica constante para resolver incidencias.
+- 📱 Responsive Design: Compatible con celulares, tablets y computadores.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Objetivo
+Facilitar la planificación y organización de actividades académicas, talleres, exposiciones y eventos culturales en espacios adaptados a las necesidades de la comunidad universitaria.
 
-## Expanding the ESLint configuration
+## 🧱 Tecnologías Utilizadas
+- React
+- Vite
+- React Router
+- Supabase
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Lenguajes:**  HTML, CSS, JavaScript, JSX
+
+## 🌐 Acceso
+La aplicación es de acceso multiplataforma a través de navegador web. Todos los usuarios deben registrarse previamente para utilizar el sistema de reservas.
+
+## 📬 Feedback
+La plataforma cuenta con una sección de comentarios para recopilar opiniones y sugerencias. ¡Tu opinión ayuda a mejorar! `En proceso para el Proyecto final`
