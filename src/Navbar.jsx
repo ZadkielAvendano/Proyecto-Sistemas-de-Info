@@ -57,7 +57,7 @@ export default function Navbar() {
       <div className="nav-wrapper">
         <nav className={`navbar ${menuOpen? "active" : ""}`}>
           <ul>
-            <li><Link to="/" onClick={() => handleAction()}>Espacios</Link></li>
+            <li><Link to={sesionActiva ? "/busqueda" : "/"} onClick={() => handleAction()}>Espacios</Link></li>
             <li><Link to="/" onClick={() => handleAction()}>Calendarios</Link></li>
             <li><Link to="/" onClick={() => handleAction()}>Reservas</Link></li>
             <li><Link to="/contact" onClick={() => handleAction()}>Contacto</Link></li>

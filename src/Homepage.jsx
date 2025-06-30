@@ -55,7 +55,7 @@ export default function Homepage() {
             <li><strong>Calendario:</strong> Visualiza tus reservas y evita conflictos de horario.</li>
             <li><strong>Soporte 24/7:</strong> Asistencia técnica para resolver problemas rápidamente.</li>
           </ul>
-          <button onClick={() => handleAction("/")}>
+          <button onClick={() => handleAction("/busqueda")}>
             {sesionActiva ? "Ver espacios" : "Registrarse"}
           </button>
         </div>

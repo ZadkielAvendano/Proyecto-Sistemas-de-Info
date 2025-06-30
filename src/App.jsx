@@ -8,6 +8,7 @@ import Profile from "./Profile.jsx";
 import AppLayout from "./AppLayout.jsx";
 import Register from "./Register.jsx";
 import Login from "./Login.jsx";
+import Busqueda from "./Busqueda.jsx";
 import "./css/App.css";
 import ContactPage from "./ContactPage.jsx";
 function App() {
@@ -28,6 +29,10 @@ function App() {
         }, {
           path: '/profile',
           element: <Profile/>
+        },
+        {
+          path: '/busqueda',
+          element: <Busqueda />
         },
       {
           path: '/contact', 
