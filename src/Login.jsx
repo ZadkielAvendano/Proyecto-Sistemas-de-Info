@@ -32,17 +32,25 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    const redirectTo = import.meta.env.DEV
+    ? 'http://localhost:5173'
+    : `${window.location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithPassword({
       email: form.email,
       password: form.password,
+      options: { redirectTo }
     });
     if (error) return setMessage(`Error: ${error.message}`);
     setMessage("Login exitoso, redirigiendo...");
   };
 
   const handleGoogleLogin = async () => {
+    const redirectTo = import.meta.env.DEV
+    ? 'http://localhost:5173'
+    : `${window.location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: { redirectTo }
     });
     if (error) setMessage(`Error con Google: ${error.message}`);
   };

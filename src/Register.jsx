@@ -34,6 +34,14 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+
+    // Validar que el correo sea institucional (Unimet)
+    const correoValido = /^[a-zA-Z0-9._%+-]+@correo\.unimet\.edu\.ve$/.test(form.email);
+    if (!correoValido) {
+      setMessage("Solo se permite correo institucional (@correo.unimet.edu.ve)");
+      return;
+    }
+
     const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -54,13 +62,14 @@ export default function Register() {
   };
 
   const handleGoogleRegister = async () => {
+    const redirectTo = import.meta.env.DEV
+    ? 'http://localhost:5173'
+    : `${window.location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: { redirectTo }
     });
-    if (error) {
-      console.error("Error con Google:", error.message);
-      setMessage(`Error con Google: ${error.message}`);
-    }
+    if (error) setMessage(`Error con Google: ${error.message}`);
   };
 
   //  Renderizado de la interfaz de usuario
@@ -106,6 +115,7 @@ export default function Register() {
             onChange={handleChange}
             required
             className="input-field"
+            placeholder="ejemplo@correo.unimet.edu.ve"
           />
         </div>
 
