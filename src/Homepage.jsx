@@ -37,7 +37,7 @@ export default function Homepage() {
           <p>Encuentra, reserva y gestiona los espacios académicos de tu universidad en minutos.
             Plataforma oficial para reservar espacios en la Universidad Metropolitana.
             Disfruta de un proceso rápido, seguro y diseñado para estudiantes.</p>
-          <button onClick={() => handleAction("/")}>
+          <button onClick={() => handleAction("/spaces")}>
             {sesionActiva ? "Reservar ahora" : "Registrarse"}
           </button>
         </div>
@@ -55,7 +55,7 @@ export default function Homepage() {
             <li><strong>Calendario:</strong> Visualiza tus reservas y evita conflictos de horario.</li>
             <li><strong>Soporte 24/7:</strong> Asistencia técnica para resolver problemas rápidamente.</li>
           </ul>
-          <button onClick={() => handleAction("/busqueda")}>
+          <button onClick={() => handleAction("/spaces")}>
             {sesionActiva ? "Ver espacios" : "Registrarse"}
           </button>
         </div>
@@ -81,7 +81,7 @@ export default function Homepage() {
         <h1>Acceso Multiplataforma</h1>
         <p>El sistema de reservas UNIMET es responsive, lo que significa que se adapta automáticamente a cualquier dispositivo: celulares,
           tablets o computadoras. Puedes reservar espacios desde tu teléfono con la misma facilidad que desde una laptop, sin perder funcionalidad.</p>
-        <button onClick={() => handleAction("/")}>
+        <button onClick={() => handleAction("/spaces")}>
           {sesionActiva ? "Reservar ahora" : "Registrarse"}
         </button>
       </article>

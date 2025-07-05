@@ -96,55 +96,57 @@ export default function Profile() {
 
   //  Renderizado de la interfaz de usuario
   return (
-    <div className="profile-container">
-      <h1>Mi Perfil</h1>
-      <p className="profile-subtitle">Gestiona tu información personal</p>
+    <div className='background-vista'>
+      <div className="profile-container">
+        <h1>Mi Perfil</h1>
+        <p className="profile-subtitle">Gestiona tu información personal</p>
 
-      <div className="profile-form">
-        {['nombre', 'apellido', 'preferencia'].map((field) => (
-          <div className="form-group" key={field}>
-            <label>{field.toUpperCase()}:</label>
+        <div className="profile-form">
+          {['nombre', 'apellido', 'preferencia'].map((field) => (
+            <div className="form-group" key={field}>
+              <label>{field.toUpperCase()}:</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  className="input-field-edit"
+                />
+              ) : (
+                <div className="input-field">
+                  {user?.user_metadata?.[field] || '—'}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div className="form-group">
+            <label>EMAIL:</label>
+            <div className="input-field">{user?.email || ''}</div>
+          </div>
+
+          <div className="button-group">
             {isEditing ? (
-              <input
-                type="text"
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                className="input-field-edit"
-              />
+              <>
+                <button className="save-button" onClick={handleSave}>
+                  Guardar
+                </button>
+                <button className="cancel-button" onClick={handleCancel}>
+                  Cancelar
+                </button>
+              </>
             ) : (
-              <div className="input-field">
-                {user?.user_metadata?.[field] || '—'}
-              </div>
+              <>
+                <button className="edit-button" onClick={handleEditToggle}>
+                  Editar Perfil
+                </button>
+                <button className="logout-button" onClick={handleSignOut}>
+                  Cerrar Sesión
+                </button>
+              </>
             )}
           </div>
-        ))}
-
-        <div className="form-group">
-          <label>EMAIL:</label>
-          <div className="input-field">{user?.email || ''}</div>
-        </div>
-
-        <div className="button-group">
-          {isEditing ? (
-            <>
-              <button className="save-button" onClick={handleSave}>
-                Guardar
-              </button>
-              <button className="cancel-button" onClick={handleCancel}>
-                Cancelar
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="edit-button" onClick={handleEditToggle}>
-                Editar Perfil
-              </button>
-              <button className="logout-button" onClick={handleSignOut}>
-                Cerrar Sesión
-              </button>
-            </>
-          )}
         </div>
       </div>
     </div>

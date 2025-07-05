@@ -74,79 +74,81 @@ export default function Register() {
 
   //  Renderizado de la interfaz de usuario
   return (
-    <div className="register-container">
-      <h1 className="register-title">{message}</h1>
-      <h2 className="register-subtitle">Regístrate para reservar el espacio adaptado a ti.</h2>
+    <div className="background-vista">
+      <div className="register-container">
+        <h1 className="register-title">{message}</h1>
+        <h2 className="register-subtitle">Regístrate para reservar el espacio adaptado a ti.</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label htmlFor="nombre">Nombre</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            value={form.nombre}
-            onChange={handleChange}
-            required
-            className="input-field"
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="nombre">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={form.nombre}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="apellido">Apellido</label>
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              value={form.apellido}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="email">Correo electrónico</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="input-field"
+              placeholder="ejemplo@correo.unimet.edu.ve"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </div>
+
+          <button type="submit" className="submit-button">
+            Registrarse
+          </button>
+        </form>
+
+        <hr style={{ margin: "1.5rem 0" }} />
+
+        <button onClick={handleGoogleRegister} className="google-button">
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+            className="google-logo"
           />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="apellido">Apellido</label>
-          <input
-            type="text"
-            id="apellido"
-            name="apellido"
-            value={form.apellido}
-            onChange={handleChange}
-            required
-            className="input-field"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="input-field"
-            placeholder="ejemplo@correo.unimet.edu.ve"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="input-field"
-          />
-        </div>
-
-        <button type="submit" className="submit-button">
-          Registrarse
+          Registrarse con Google
         </button>
-      </form>
-
-      <hr style={{ margin: "1.5rem 0" }} />
-
-      <button onClick={handleGoogleRegister} className="google-button">
-        <img
-          src="https://developers.google.com/identity/images/g-logo.png"
-          alt="Google"
-          className="google-logo"
-        />
-        Registrarse con Google
-      </button>
+      </div>
     </div>
   );
 }
