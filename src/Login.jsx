@@ -57,49 +57,51 @@ export default function Login() {
 
   // Renderizado de la interfaz de usuario
   return (
-    <div className="login-container">
-      <h1 className="login-title">{message}</h1>
+    <div className="background-vista">
+      <div className="login-container">
+        <h1 className="login-title">{message}</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Correo electrónico</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="input-field"
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+          </div>
+
+          <button type="submit" className="submit-button">
+            Login
+          </button>
+        </form>
+
+        <hr style={{ margin: "1.5rem 0" }} />
+
+        <button onClick={handleGoogleLogin} className="google-button">
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+            className="google-logo"
           />
-        </div>
-
-        <div className="input-group">
-          <label>Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="input-field"
-          />
-        </div>
-
-        <button type="submit" className="submit-button">
-          Login
+          Iniciar Sesión con Google
         </button>
-      </form>
-
-      <hr style={{ margin: "1.5rem 0" }} />
-
-      <button onClick={handleGoogleLogin} className="google-button">
-        <img
-          src="https://developers.google.com/identity/images/g-logo.png"
-          alt="Google"
-          className="google-logo"
-        />
-        Iniciar Sesión con Google
-      </button>
+      </div>
     </div>
   );
 }

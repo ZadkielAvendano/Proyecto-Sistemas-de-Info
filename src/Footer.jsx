@@ -1,6 +1,7 @@
-import { Link } from "react-router";
-import unimetLogo from "./assets/unimet_logo.png";
+import { Link } from 'react-router-dom';
+import unimetLogo from './assets/unimet_logo.png';
 
+/* Pie de página simple */
 export default function Footer() {
   return (
     <footer className="footer">
@@ -8,5 +9,5 @@ export default function Footer() {
         <Link to="/"><img src={unimetLogo} alt="Unimet Logo" /></Link>
       </div>
     </footer>
-  )
+  );
 }
