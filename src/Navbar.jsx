@@ -1,83 +1,76 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
-import { supabase } from './config/supabase';
-import { verificar_sesion } from "./utils";
-import unimetLogo from "./assets/unimet_logo.png";
-import "./css/Header.css";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from './config/supabase.js';
+import { verificar_sesion } from './utils';
+import unimetLogo from './assets/unimet_logo.png';
+import './css/Header.css';            // ← asegúrate de que la ruta es correcta
 
+/* Barra de navegación con ocultamiento en scroll */
 export default function Navbar() {
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const [menuOpen, setMenuOpen]   = useState(false);
   const [sesionActiva, setSesionActiva] = useState(false);
+  const [showHeader, setShowHeader]     = useState(true);
+  const [lastY, setLastY]         = useState(0);
 
+  /* Actualiza estado de sesión */
   useEffect(() => {
-    async function inicializarSesion() {
-      const activa = await verificar_sesion();
-      setSesionActiva(activa);
-    }
-
-    inicializarSesion();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSesionActiva(!!session);
-    });
-
+    (async () => setSesionActiva(await verificar_sesion()))();
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_evt, session) => setSesionActiva(!!session)
+    );
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  /* Oculta al bajar, muestra al subir */
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      setShowHeader(currentY < lastScrollY || currentY < 50);
-      if (menuOpen) {
-        setMenuOpen(currentY < lastScrollY || currentY < 50)
-      }
-      setLastScrollY(currentY);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setShowHeader(y < lastY || y < 50);
+      if (menuOpen) setMenuOpen(y < lastY || y < 50);  // cierra menú al bajar
+      setLastY(y);
     };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [lastY, menuOpen]);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  function handleAction(link) {
-    if (link != "") {
-      navigate(link);
-    }
-    setMenuOpen(false);
-  }
+  const go = (path = '') => { if (path) navigate(path); setMenuOpen(false); };
 
   return (
-    <header className={`header ${showHeader ? "visible" : "hidden"}`}>
+    <header className={`header ${showHeader ? 'visible' : 'hidden'}`}>
       <div className="logo">
-        <Link to="/" onClick={() => handleAction()}><img src={unimetLogo} alt="Unimet Logo" /></Link>
+        <Link to="/" onClick={() => go()}>
+          <img src={unimetLogo} alt="Unimet Logo" />
+        </Link>
       </div>
-      
-      <div className="nav-wrapper">
-        <nav className={`navbar ${menuOpen? "active" : ""}`}>
-          <ul>
-            <li><Link to={sesionActiva ? "/spaces" : "/"} onClick={() => handleAction()}>Espacios</Link></li>
-            <li><Link to="/" onClick={() => handleAction()}>Calendarios</Link></li>
-            <li><Link to="/contact" onClick={() => handleAction()}>Contacto</Link></li>
-            
-            {!sesionActiva && (
-              <>
-                <li><button onClick={() => handleAction("/login")}>Iniciar Sesión</button></li>
-                <li className="secondary_button"><button onClick={() => handleAction("/register")}>Registrarse</button></li>
-              </>
-            )}
 
-            {sesionActiva && (
-              <li><button onClick={() => handleAction("/profile")}>Perfil</button></li>
-            )}
+      <nav className={`navbar ${menuOpen ? 'active' : ''}`}>
+        <ul>
+          <li>
+            <Link to={sesionActiva ? '/spaces' : '/'} onClick={() => go()}>
+              Espacios
+            </Link>
+          </li>
+          <li><Link to="/"        onClick={() => go()}>Calendarios</Link></li>
+          <li><Link to="/contact" onClick={() => go()}>Contacto</Link></li>
 
-          </ul>
-        </nav>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? "✖" : "☰"}
-        </button>
-      </div>
+          {!sesionActiva ? (
+            <>
+              <li><button onClick={() => go('/login')}>Iniciar Sesión</button></li>
+              <li className="secondary_button">
+                <button onClick={() => go('/register')}>Registrarse</button>
+              </li>
+            </>
+          ) : (
+            <li><button onClick={() => go('/profile')}>Perfil</button></li>
+          )}
+        </ul>
+      </nav>
+
+      <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? '✖' : '☰'}
+      </button>
     </header>
-  )
+  );
 }
