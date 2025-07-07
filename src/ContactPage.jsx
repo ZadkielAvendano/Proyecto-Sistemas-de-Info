@@ -1,6 +1,60 @@
 import "./css/ContactPage.css";
+import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabaseUrl = 'https://eovmmgneddkqooabwvhc.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvdm1tZ25lZGRrcW9vYWJ3dmhjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTk1NTU4OCwiZXhwIjoyMDY1NTMxNTg4fQ.oC9ggsfEXVR9IZY7RQUuPI8K5aR7EXE6ck03DP5rM0c';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .insert([formData])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      setSubmitStatus({ success: true, message: 'Mensaje enviado con éxito!' });
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error saving contact form:', error);
+      setSubmitStatus({ success: false, message: 'Error al enviar el mensaje. Por favor intente nuevamente.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="contact-page">
       <h1>Contacto UNIMET</h1>
@@ -25,20 +79,42 @@ export default function ContactPage() {
 
         <section className="contact-form">
           <h2>Envíanos un Mensaje</h2>
-          <form>
+          {submitStatus && (
+            <div className={`submit-message ${submitStatus.success ? 'success' : 'error'}`}>
+              {submitStatus.message}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Nombre Completo</label>
-              <input type="text" id="name" required />
+              <input 
+                type="text" 
+                id="name" 
+                value={formData.name}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
             <div className="form-group">
               <label htmlFor="email">Correo Electrónico</label>
-              <input type="email" id="email" required />
+              <input 
+                type="email" 
+                id="email" 
+                value={formData.email}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
             <div className="form-group">
               <label htmlFor="subject">Asunto</label>
-              <select id="subject" required>
+              <select 
+                id="subject" 
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Seleccione un asunto</option>
                 <option value="reservation">Problemas con reservaciones</option>
                 <option value="technical">Soporte técnico</option>
@@ -49,10 +125,22 @@ export default function ContactPage() {
             
             <div className="form-group">
               <label htmlFor="message">Mensaje</label>
-              <textarea id="message" rows="5" required></textarea>
+              <textarea 
+                id="message" 
+                rows="5" 
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
             
-            <button type="submit" className="submit-btn">Enviar Mensaje</button>
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+            </button>
           </form>
         </section>
       </div>

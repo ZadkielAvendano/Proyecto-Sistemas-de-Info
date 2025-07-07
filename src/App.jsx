@@ -11,9 +11,8 @@ import Profile     from './Profile.jsx';
 import Spaces      from './Spaces.jsx';
 import Reserva     from './Reserva.jsx';
 import ContactPage from './ContactPage.jsx';
-
 import ProtectedAdminRoute from './ProtectedAdminRoute.jsx';
-import AdminSpaces         from './AdminSpaces.jsx';
+import AdminSpaces         from './adminSpaces.jsx';
 
 import './css/App.css';
 
