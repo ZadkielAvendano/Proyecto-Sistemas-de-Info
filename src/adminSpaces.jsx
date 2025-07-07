@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './config/supabase.js';
-import './css/AdminSpaces.css';
+import './css/adminSpaces.css';
 
 /* CRUD de espacios para administradores */
 export default function AdminSpaces() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { supabase } from './config/supabase.js';
 import { verificar_sesion } from './utils';
 import unimetLogo from './assets/unimet_logo.png';
