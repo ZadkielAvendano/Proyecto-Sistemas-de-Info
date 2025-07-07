@@ -11,7 +11,7 @@ import ContactPage from './ContactPage.jsx';
 
 import ProtectedAdminRoute from './ProtectedAdminRoute.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
-import AdminSpaces from './adminSpaces.jsx';
+import AdminSpaces from './AdminSpaces.jsx';
 
 import './css/App.css';
 
