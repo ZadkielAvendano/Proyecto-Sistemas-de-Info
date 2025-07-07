@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { UserContext } from './context/UserContext';
 
 /* Bloquea la ruta si el rol no es 'admin' */

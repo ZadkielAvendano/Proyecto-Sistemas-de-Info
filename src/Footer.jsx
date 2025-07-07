@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import unimetLogo from './assets/unimet_logo.png';
 
 /* Pie de página simple */
