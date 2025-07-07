@@ -2,13 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "./context/UserContext";
 import { useParams, useNavigate } from "react-router";
 import ImageCarousel from './components/ImageCarousel';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import "./css/Reserva.css";
 
 import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useState } from "react";
 
 export default function Reserva() {
     const { user, loading } = useContext(UserContext);
