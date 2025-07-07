@@ -1,34 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { supabase } from './config/supabase.js';
-import { verificar_sesion } from './utils';
+import { UserContext } from './context/UserContext';
 import unimetLogo from './assets/unimet_logo.png';
-import './css/Header.css';            // ← asegúrate de que la ruta es correcta
+import './css/Header.css';
 
-/* Barra de navegación con ocultamiento en scroll */
 export default function Navbar() {
   const navigate = useNavigate();
+  const { user, loading } = useContext(UserContext);
+  const sesionActiva = !loading && !!user;
 
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const [sesionActiva, setSesionActiva] = useState(false);
-  const [showHeader, setShowHeader]     = useState(true);
-  const [lastY, setLastY]         = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastY, setLastY] = useState(0);
 
-  /* Actualiza estado de sesión */
-  useEffect(() => {
-    (async () => setSesionActiva(await verificar_sesion()))();
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_evt, session) => setSesionActiva(!!session)
-    );
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  /* Oculta al bajar, muestra al subir */
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setShowHeader(y < lastY || y < 50);
-      if (menuOpen) setMenuOpen(y < lastY || y < 50);  // cierra menú al bajar
+      if (menuOpen) setMenuOpen(y < lastY || y < 50);
       setLastY(y);
     };
     window.addEventListener('scroll', onScroll);
@@ -48,12 +37,11 @@ export default function Navbar() {
       <nav className={`navbar ${menuOpen ? 'active' : ''}`}>
         <ul>
           <li>
-            <Link to={sesionActiva ? '/spaces' : '/'} onClick={() => go()}>
+            <Link to={sesionActiva ? '/spaces' : '/login'} onClick={() => go(sesionActiva ? '/spaces' : '/login')}>
               Espacios
             </Link>
           </li>
-          <li><Link to="/"        onClick={() => go()}>Calendarios</Link></li>
-          <li><Link to="/contact" onClick={() => go()}>Contacto</Link></li>
+          <li><Link to="/contact" onClick={() => go('/contact')}>Contacto</Link></li>
 
           {!sesionActiva ? (
             <>

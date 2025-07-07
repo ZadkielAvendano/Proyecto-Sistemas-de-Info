@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { verificar_sesion } from "./utils";
+import { UserContext } from "./context/UserContext";
 import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
@@ -8,17 +8,9 @@ import "./css/Homepage.css"
 import CommentSystem from "./CommentSystem"; 
 
 export default function Homepage() {
-  const [sesionActiva, setSesionActiva] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function cargarSesion() {
-      const activa = await verificar_sesion();
-      setSesionActiva(activa);
-    }
-
-    cargarSesion();
-  }, []);
+  const { user, loading } = useContext(UserContext);
+  const sesionActiva = !loading && !!user; 
 
   function handleAction(link) {
     if (sesionActiva) {

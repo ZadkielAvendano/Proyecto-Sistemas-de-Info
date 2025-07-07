@@ -1,3 +1,5 @@
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "./context/UserContext";
 import { useParams, useNavigate } from "react-router";
 import ImageCarousel from './components/ImageCarousel';
 import "./css/Reserva.css";
@@ -7,9 +9,10 @@ import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
 
 export default function Reserva() {
+    const { user, loading } = useContext(UserContext);
+    const sesionActiva = !loading && !!user;
     const { espacioId } = useParams();
     const navigate = useNavigate();
-
 
     const imagenes = [
         imagen_1,

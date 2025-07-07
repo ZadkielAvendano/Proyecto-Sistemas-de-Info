@@ -1,5 +1,6 @@
 // Importaciones necesarias
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "./context/UserContext";
 import { supabase } from "./config/supabase";
 import { useNavigate } from "react-router";
 import "./css/Login.css";
@@ -9,21 +10,15 @@ export default function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("Bienvenido, inicia sesión");
   const [form, setForm] = useState({ email: "", password: "" });
+  const { user, loading } = useContext(UserContext);
 
   // Comprobación de sesión activa
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/");
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session) navigate("/");
-      }
-    );
-
-    return () => listener.subscription.unsubscribe();
-  }, [navigate]);
+    // Si la carga ha terminado y hay un usuario, redirige a la página principal
+    if (!loading && user) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   // Manejadores de eventos
   const handleChange = (e) =>
