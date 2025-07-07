@@ -4,22 +4,23 @@ export default function ContactPage() {
   return (
     <div className="contact-page">
       <h1>Contacto UNIMET</h1>
-      
+
       <div className="contact-container">
         <section className="contact-info">
           <h2>Información de Contacto</h2>
+
           <div className="contact-card">
             <h3>Oficina Principal</h3>
             <p><strong>Teléfono:</strong> +58 212-555-1234</p>
             <p><strong>Email:</strong> reservaciones@unimet.edu.ve</p>
-            <p><strong>Dirección:</strong> Ditribuidor metropolitano, Blvr. de Sabana Grande, Caracas 1060, Miranda</p>
+            <p><strong>Dirección:</strong> Distribuidor Metropolitano, Blvr. de Sabana Grande, Caracas 1060, Miranda</p>
           </div>
-          
+
           <div className="contact-card">
             <h3>Soporte Técnico</h3>
             <p><strong>Teléfono:</strong> +58 212-555-5678</p>
             <p><strong>Email:</strong> soporte.reservas@unimet.edu.ve</p>
-            <p><strong>Horario:</strong> Lunes a Viernes, 8:00 am - 5:00 pm</p>
+            <p><strong>Horario:</strong> Lunes a Viernes, 8:00 am – 5:00 pm</p>
           </div>
         </section>
 
@@ -30,12 +31,12 @@ export default function ContactPage() {
               <label htmlFor="name">Nombre Completo</label>
               <input type="text" id="name" required />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="email">Correo Electrónico</label>
               <input type="email" id="email" required />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="subject">Asunto</label>
               <select id="subject" required>
@@ -46,22 +47,30 @@ export default function ContactPage() {
                 <option value="other">Otro</option>
               </select>
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="message">Mensaje</label>
               <textarea id="message" rows="5" required></textarea>
             </div>
-            
+
             <button type="submit" className="submit-btn">Enviar Mensaje</button>
           </form>
         </section>
       </div>
-      
+
       <div className="map-container">
         <h2>Ubicación en el Campus</h2>
         <div className="map-placeholder">
-          {/* Poner el codigo de google maps con la ubicacion de la universidad acá */}
-          <p>Mapa de Google Maps aparecerá aquí</p>
+          <iframe
+            title="Ubicación UNIMET"
+            src="https://maps.google.com/maps?q=Universidad%20Metropolitana%20Caracas%20Venezuela&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </div>
