@@ -1,3 +1,5 @@
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "./context/UserContext";
 import { useParams, useNavigate } from "react-router";
 import ImageCarousel from './components/ImageCarousel';
 import "./css/Reserva.css";
@@ -9,8 +11,11 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useState } from "react";
 
 export default function Reserva() {
+    const { user, loading } = useContext(UserContext);
+    const sesionActiva = !loading && !!user;
     const { espacioId } = useParams();
     const navigate = useNavigate();
+
     const [showPayPal, setShowPayPal] = useState(false);
     const [reservaData, setReservaData] = useState(null);
     const [pagoExitoso, setPagoExitoso] = useState(false);

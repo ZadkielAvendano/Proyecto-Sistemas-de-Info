@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router';
+import { createBrowserRouter, RouterProvider, } from 'react-router';
 
 import AppLayout   from './AppLayout.jsx';
 import Homepage    from './Homepage.jsx';
@@ -13,7 +10,8 @@ import Reserva     from './Reserva.jsx';
 import ContactPage from './ContactPage.jsx';
 
 import ProtectedAdminRoute from './ProtectedAdminRoute.jsx';
-import AdminSpaces         from './AdminSpaces.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
+import AdminSpaces from './AdminSpaces.jsx';
 
 import './css/App.css';
 
@@ -26,10 +24,33 @@ export default function App() {
         { path: '/',           element: <Homepage /> },
         { path: '/register',   element: <Register /> },
         { path: '/login',      element: <Login /> },
-        { path: '/profile',    element: <Profile /> },
-        { path: '/spaces',     element: <Spaces /> },
-        { path: '/reserva/:spacioId', element: <Reserva /> },
         { path: '/contact',    element: <ContactPage /> },
+
+        // Rutas protegidas para cualquier usuario autenticado
+        {
+          path: '/profile',
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/spaces',
+          element: (
+            <ProtectedRoute>
+              <Spaces />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/reserva/:spacioId',
+          element: (
+            <ProtectedRoute>
+              <Reserva />
+            </ProtectedRoute>
+          ),
+        },
 
         /* Ruta protegida de administrador */
         {

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { verificar_sesion } from "./utils";
+import { UserContext } from "./context/UserContext";
 import SpaceCard from "./components/SpaceCard";
 import "./css/Busqueda.css";
 
 export default function Spaces() {
-  const [sesionActiva, setSesionActiva] = useState(false);
+  const { user, loading } = useContext(UserContext);
+  const sesionActiva = !loading && !!user;
   const [busqueda, setBusqueda] = useState("");
   const [espaciosFiltrados, setEspaciosFiltrados] = useState([]);
   const navigate = useNavigate();
@@ -55,20 +56,6 @@ export default function Spaces() {
       descripcion: ""
     }
   ];
-
-  useEffect(() => {
-    async function cargarSesion() {
-      const activa = await verificar_sesion();
-      setSesionActiva(activa);
-      
-      if (!activa) {
-        navigate("/login");
-        return;
-      }
-    }
-
-    cargarSesion();
-  }, [navigate]);
 
   useEffect(() => {
     // Filtrar espacios basado en la búsqueda
