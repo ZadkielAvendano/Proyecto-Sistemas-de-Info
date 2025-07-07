@@ -157,3 +157,19 @@
 .btn-save:hover {
     background: #ea7a00
 }
+
+/* Miniaturas dentro del modal */
+.current-photos-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.current-photos-grid img {
+  max-width: 120px;
+  max-height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.25);
+}
