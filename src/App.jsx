@@ -44,7 +44,7 @@ export default function App() {
           ),
         },
         {
-          path: '/reserva/:spacioId',
+          path: '/reserva/:espacioId',
           element: (
             <ProtectedRoute>
               <Reserva />

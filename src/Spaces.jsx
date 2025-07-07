@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "./context/UserContext";
+import { supabase } from "./config/supabase";
 import SpaceCard from "./components/SpaceCard";
 import "./css/Busqueda.css";
 
@@ -8,68 +9,56 @@ export default function Spaces() {
   const { user, loading } = useContext(UserContext);
   const sesionActiva = !loading && !!user;
   const [busqueda, setBusqueda] = useState("");
+  const [allSpaces, setAllSpaces] = useState([]); // Almacena todos los espacios de Supabase
   const [espaciosFiltrados, setEspaciosFiltrados] = useState([]);
+  const [loadingSpaces, setLoadingSpaces] = useState(true); // Estado de carga para los espacios
+  const [error, setError] = useState(null); // Estado para manejar errores
   const navigate = useNavigate();
 
-  const placeholder_image = "https://placehold.co/300x200?text=Imagen+no+disponible";
+  // Función para obtener los espacios de Supabase
+  const fetchSpaces = async () => {
+    setLoadingSpaces(true);
+    setError(null);
+    try {
+      const { data, error } = await supabase
+        .from('spaces')
+        .select('*'); // Selecciona todas las columnas de la tabla 'spaces'
 
-  // Espacios por defecto
-  const espaciosDefault = [
-    {
-      id: 1,
-      nombre: "A01-101",
-      tipo: "Aula",
-      capacidad: 30,
-      equipamiento: "Proyector, Pizarra, Aire acondicionado",
-      estado: "Disponible",
-      imagen: [],
-      descripcion: ""
-    },
-    {
-      id: 2,
-      nombre: "A01-302",
-      tipo: "Aula",
-      capacidad: 25,
-      equipamiento: "Proyector, Pizarra, Aire acondicionado",
-      estado: "Disponible",
-      imagen: [],
-      descripcion: ""
-    },
-    {
-      id: 3,
-      nombre: "Sala de Juicio",
-      tipo: "Sala Especializada",
-      capacidad: 50,
-      equipamiento: "Sistema de audio, Proyector, Aire acondicionado",
-      estado: "Mantenimiento",
-      imagen: [],
-      descripcion: ""
-    },
-    {
-      id: 4,
-      nombre: "Sala Gamer",
-      tipo: "Sala de Computación",
-      capacidad: 20,
-      equipamiento: "Computadoras gaming, Proyector, Aire acondicionado",
-      estado: "Ocupado",
-      imagen: [],
-      descripcion: ""
+      if (error) {
+        throw error;
+      }
+      setAllSpaces(data);
+      setEspaciosFiltrados(data); // Inicialmente, muestra todos los espacios
+    } catch (err) {
+      console.error("Error al obtener espacios:", err.message);
+      setError("No se pudieron cargar los espacios. Inténtalo de nuevo más tarde.");
+      setAllSpaces([]); // Limpia los espacios si hay un error
+      setEspaciosFiltrados([]);
+    } finally {
+      setLoadingSpaces(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchSpaces(); // Carga los espacios cuando el componente se monta
+  }, []); // El array vacío asegura que se ejecute solo una vez al montar
 
   useEffect(() => {
     // Filtrar espacios basado en la búsqueda
     if (busqueda.trim() === "") {
-      setEspaciosFiltrados(espaciosDefault);
+      setEspaciosFiltrados(allSpaces);
     } else {
-      const filtrados = espaciosDefault.filter(espacio =>
+      const filtrados = allSpaces.filter(espacio =>
         espacio.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
         espacio.tipo.toLowerCase().includes(busqueda.toLowerCase()) ||
-        espacio.equipamiento.toLowerCase().includes(busqueda.toLowerCase())
+        (espacio.equipamiento && espacio.equipamiento.toLowerCase().includes(busqueda.toLowerCase())) ||
+        (espacio.descripcion && espacio.descripcion.toLowerCase().includes(busqueda.toLowerCase())) ||
+        (espacio.ubicacion && espacio.ubicacion.toLowerCase().includes(busqueda.toLowerCase())) ||
+        espacio.estado.toLowerCase().includes(busqueda.toLowerCase())
       );
       setEspaciosFiltrados(filtrados);
     }
-  }, [busqueda]);
+  }, [busqueda, allSpaces]); // Depende de 'busqueda' y 'allSpaces'
 
   const handleBuscar = (e) => {
     e.preventDefault();
@@ -77,13 +66,8 @@ export default function Spaces() {
   };
 
   const handleReservar = (espacio) => {
-    // Función deshabilitada por ahora
-    // alert(`Reserva solicitada para ${espacio.nombre}`);
+    console.log(`Función de reserva en Spaces.jsx llamada para: ${espacio.nombre}`);
   };
-
-  if (!sesionActiva) {
-    return null; // No mostrar nada mientras redirige
-  }
 
   return (
     <div className="background-vista">
@@ -110,23 +94,27 @@ export default function Spaces() {
 
         <section className="espacios-section">
           <h2>Espacios Disponibles</h2>
-          <div className="espacios-grid">
-            {espaciosFiltrados.length > 0 ? (
-              espaciosFiltrados.map((espacio) => (
+          {loadingSpaces ? (
+            <div className="loading-message">Cargando espacios...</div>
+          ) : error ? (
+            <div className="error-message">{error}</div>
+          ) : espaciosFiltrados.length > 0 ? (
+            <div className="espacios-grid">
+              {espaciosFiltrados.map((espacio) => (
                 <SpaceCard
                   key={espacio.id}
                   espacio={espacio}
                   onReservar={handleReservar}
                 />
-              ))
-            ) : (
-              <div className="no-resultados">
-                <p>No se encontraron espacios que coincidan con tu búsqueda.</p>
-              </div>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-resultados">
+              <p>No se encontraron espacios que coincidan con tu búsqueda.</p>
+            </div>
+          )}
         </section>
       </div>
     </div>
   );
-} 
+}
