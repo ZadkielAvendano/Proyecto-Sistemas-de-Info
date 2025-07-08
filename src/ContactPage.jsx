@@ -1,6 +1,56 @@
 import "./css/ContactPage.css";
+import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { supabase } from './config/supabase.js';
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .insert([formData])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      setSubmitStatus({ success: true, message: 'Mensaje enviado con éxito!' });
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error saving contact form:', error);
+      setSubmitStatus({ success: false, message: 'Error al enviar el mensaje. Por favor intente nuevamente.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="contact-page">
       <h1>Contacto UNIMET</h1>
@@ -25,20 +75,42 @@ export default function ContactPage() {
 
         <section className="contact-form">
           <h2>Envíanos un Mensaje</h2>
-          <form>
+          {submitStatus && (
+            <div className={`submit-message ${submitStatus.success ? 'success' : 'error'}`}>
+              {submitStatus.message}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Nombre Completo</label>
-              <input type="text" id="name" required />
+              <input 
+                type="text" 
+                id="name" 
+                value={formData.name}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
             <div className="form-group">
               <label htmlFor="email">Correo Electrónico</label>
-              <input type="email" id="email" required />
+              <input 
+                type="email" 
+                id="email" 
+                value={formData.email}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
             <div className="form-group">
               <label htmlFor="subject">Asunto</label>
-              <select id="subject" required>
+              <select 
+                id="subject" 
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Seleccione un asunto</option>
                 <option value="reservation">Problemas con reservaciones</option>
                 <option value="technical">Soporte técnico</option>
@@ -49,10 +121,22 @@ export default function ContactPage() {
             
             <div className="form-group">
               <label htmlFor="message">Mensaje</label>
-              <textarea id="message" rows="5" required></textarea>
+              <textarea 
+                id="message" 
+                rows="5" 
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
             
-            <button type="submit" className="submit-btn">Enviar Mensaje</button>
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+            </button>
           </form>
         </section>
       </div>
@@ -60,8 +144,16 @@ export default function ContactPage() {
       <div className="map-container">
         <h2>Ubicación en el Campus</h2>
         <div className="map-placeholder">
-          {/* Poner el codigo de google maps con la ubicacion de la universidad acá */}
-          <p>Mapa de Google Maps aparecerá aquí</p>
+          <iframe
+            title="Ubicación UNIMET"
+            src="https://maps.google.com/maps?q=Universidad%20Metropolitana%20Caracas%20Venezuela&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </div>

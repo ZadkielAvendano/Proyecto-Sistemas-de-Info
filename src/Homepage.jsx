@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { verificar_sesion } from "./utils";
+import { UserContext } from "./context/UserContext";
 import imagen_1 from "./assets/imagen_1.png";
 import imagen_2 from "./assets/imagen_2.png";
 import imagen_3 from "./assets/imagen_3.png";
@@ -8,17 +8,9 @@ import "./css/Homepage.css"
 import CommentSystem from "./CommentSystem"; 
 
 export default function Homepage() {
-  const [sesionActiva, setSesionActiva] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function cargarSesion() {
-      const activa = await verificar_sesion();
-      setSesionActiva(activa);
-    }
-
-    cargarSesion();
-  }, []);
+  const { user, loading } = useContext(UserContext);
+  const sesionActiva = !loading && !!user; 
 
   function handleAction(link) {
     if (sesionActiva) {
@@ -37,7 +29,7 @@ export default function Homepage() {
           <p>Encuentra, reserva y gestiona los espacios académicos de tu universidad en minutos.
             Plataforma oficial para reservar espacios en la Universidad Metropolitana.
             Disfruta de un proceso rápido, seguro y diseñado para estudiantes.</p>
-          <button onClick={() => handleAction("/")}>
+          <button onClick={() => handleAction("/spaces")}>
             {sesionActiva ? "Reservar ahora" : "Registrarse"}
           </button>
         </div>
@@ -55,7 +47,7 @@ export default function Homepage() {
             <li><strong>Calendario:</strong> Visualiza tus reservas y evita conflictos de horario.</li>
             <li><strong>Soporte 24/7:</strong> Asistencia técnica para resolver problemas rápidamente.</li>
           </ul>
-          <button onClick={() => handleAction("/")}>
+          <button onClick={() => handleAction("/spaces")}>
             {sesionActiva ? "Ver espacios" : "Registrarse"}
           </button>
         </div>
@@ -81,7 +73,7 @@ export default function Homepage() {
         <h1>Acceso Multiplataforma</h1>
         <p>El sistema de reservas UNIMET es responsive, lo que significa que se adapta automáticamente a cualquier dispositivo: celulares,
           tablets o computadoras. Puedes reservar espacios desde tu teléfono con la misma facilidad que desde una laptop, sin perder funcionalidad.</p>
-        <button onClick={() => handleAction("/")}>
+        <button onClick={() => handleAction("/spaces")}>
           {sesionActiva ? "Reservar ahora" : "Registrarse"}
         </button>
       </article>

@@ -1,46 +1,76 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
-import Homepage from "./Homepage.jsx";
-import {supabase} from "./config/supabase.js";
-import Profile from "./Profile.jsx";
-import AppLayout from "./AppLayout.jsx";
-import Register from "./Register.jsx";
-import Login from "./Login.jsx";
-import "./css/App.css";
-import ContactPage from "./ContactPage.jsx";
-function App() {
+import { createBrowserRouter, RouterProvider, } from 'react-router';
+
+import AppLayout   from './AppLayout.jsx';
+import Homepage    from './Homepage.jsx';
+import Register    from './Register.jsx';
+import Login       from './Login.jsx';
+import Profile     from './Profile.jsx';
+import Spaces      from './Spaces.jsx';
+import Reserva     from './Reserva.jsx';
+import ContactPage from './ContactPage.jsx';
+
+import ProtectedAdminRoute from './ProtectedAdminRoute.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
+import AdminSpaces from './AdminSpaces.jsx';
+
+import './css/App.css';
+
+/* Rutas de la aplicación */
+export default function App() {
   const router = createBrowserRouter([
-    
-      {
+    {
       element: <AppLayout />,
-      children: [{
-          path: '/',
-          element: <Homepage />
+      children: [
+        { path: '/',           element: <Homepage /> },
+        { path: '/register',   element: <Register /> },
+        { path: '/login',      element: <Login /> },
+
+        // Rutas protegidas para cualquier usuario autenticado
+        {
+          path: '/profile',
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
         },
         {
-          path: '/register',
-          element: <Register />
-        }, {
-          path: '/login',
-          element: <Login />
-        }, {
-          path: '/profile',
-          element: <Profile/>
+          path: '/contact',
+          element: (
+            <ProtectedRoute>
+              <ContactPage />
+            </ProtectedRoute>
+          ),
         },
-      {
-          path: '/contact', 
-          element: <ContactPage />
+        {
+          path: '/spaces',
+          element: (
+            <ProtectedRoute>
+              <Spaces />
+            </ProtectedRoute>
+          ),
         },
-      ]}
+        {
+          path: '/reserva/:espacioId',
+          element: (
+            <ProtectedRoute>
+              <Reserva />
+            </ProtectedRoute>
+          ),
+        },
 
+        /* Ruta protegida de administrador */
+        {
+          path: '/admin/spaces',
+          element: (
+            <ProtectedAdminRoute>
+              <AdminSpaces />
+            </ProtectedAdminRoute>
+          ),
+        },
+      ],
+    },
+  ]);
 
-  ])
-
-  return (
-    <RouterProvider router={router} />
-  )
+  return <RouterProvider router={router} />;
 }
-
-export default App
