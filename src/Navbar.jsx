@@ -1,3 +1,4 @@
+// Navbar.jsx
 import { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { UserContext } from './context/UserContext';
@@ -6,8 +7,9 @@ import './css/Header.css';
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, loading } = useContext(UserContext);
+  const { user, perfil, loading } = useContext(UserContext);
   const sesionActiva = !loading && !!user;
+  const isAdmin = sesionActiva && perfil?.rol === 'admin';
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
@@ -24,7 +26,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [lastY, menuOpen]);
 
-  const go = (path = '') => { if (path) navigate(path); setMenuOpen(false); };
+  const go = (path = '') => {
+    if (path) navigate(path);
+    setMenuOpen(false);
+  };
 
   return (
     <header className={`header ${showHeader ? 'visible' : 'hidden'}`}>
@@ -41,7 +46,20 @@ export default function Navbar() {
               Espacios
             </Link>
           </li>
-          <li><Link to="/contact" onClick={() => go('/contact')}>Contacto</Link></li>
+
+          {isAdmin && (
+            <li>
+              <Link to="/admin/spaces" onClick={() => go('/admin/spaces')}>
+                Admin
+              </Link>
+            </li>
+          )}
+
+          <li>
+            <Link to="/contact" onClick={() => go('/contact')}>
+              Contacto
+            </Link>
+          </li>
 
           {!sesionActiva ? (
             <>
