@@ -29,7 +29,7 @@ export default function Login() {
     setMessage("");
     const redirectTo = import.meta.env.DEV
     ? 'http://localhost:5173'
-    : `${window.location.origin}/auth/callback`;
+    : `${window.location.origin}/`;
     const { error } = await supabase.auth.signInWithPassword({
       email: form.email,
       password: form.password,
@@ -42,7 +42,7 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     const redirectTo = import.meta.env.DEV
     ? 'http://localhost:5173'
-    : `${window.location.origin}/auth/callback`;
+    : `${window.location.origin}/`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo }
