@@ -144,8 +144,16 @@ export default function ContactPage() {
       <div className="map-container">
         <h2>Ubicación en el Campus</h2>
         <div className="map-placeholder">
-          {/* Poner el codigo de google maps con la ubicacion de la universidad acá */}
-          <p>Mapa de Google Maps aparecerá aquí</p>
+          <iframe
+            title="Ubicación UNIMET"
+            src="https://maps.google.com/maps?q=Universidad%20Metropolitana%20Caracas%20Venezuela&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </div>
