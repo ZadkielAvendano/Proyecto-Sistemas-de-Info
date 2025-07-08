@@ -24,7 +24,6 @@ export default function App() {
         { path: '/',           element: <Homepage /> },
         { path: '/register',   element: <Register /> },
         { path: '/login',      element: <Login /> },
-        { path: '/contact',    element: <ContactPage /> },
 
         // Rutas protegidas para cualquier usuario autenticado
         {
@@ -32,6 +31,14 @@ export default function App() {
           element: (
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/contact',
+          element: (
+            <ProtectedRoute>
+              <ContactPage />
             </ProtectedRoute>
           ),
         },

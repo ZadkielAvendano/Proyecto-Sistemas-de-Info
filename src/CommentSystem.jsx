@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { UserContext } from './context/UserContext';
 import avatar from "./assets/unimet_logo.png";
-import { verificar_sesion } from "./utils";
 import { useNavigate } from 'react-router';
 
 // Configuración de Supabase
@@ -30,12 +29,6 @@ const CommentSystem = () => {
   // Verificar sesión y cargar comentarios
   useEffect(() => {
     const initialize = async () => {
-      const sessionActive = await verificar_sesion();
-      if (!sessionActive) {
-        navigate('/login');
-        return;
-      }
-      
       await fetchComments();
     };
 
