@@ -10,8 +10,7 @@
   margin: 2rem 0;
 }
 
-.contact-info,
-.contact-form {
+.contact-info, .contact-form {
   flex: 1;
 }
 
@@ -20,7 +19,7 @@
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .contact-card h3 {
@@ -69,12 +68,30 @@
 
 .map-placeholder {
   height: 400px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
-  overflow: hidden;
-  background: none; /* importante si antes había color gris */
 }
 
-/* Responsive */
+.submit-message {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.submit-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.submit-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
   .contact-container {
     flex-direction: column;
