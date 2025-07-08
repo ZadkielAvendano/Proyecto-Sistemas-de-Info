@@ -173,3 +173,120 @@
   border-radius: 8px;
   box-shadow: 0 0 4px rgba(0,0,0,0.25);
 }
+
+/* ---------- Responsive tweaks ---------- */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 1rem;
+  }
+
+  .create-button {
+    width: 100%;
+  }
+
+  /* Tabla con desplazamiento horizontal */
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .action-buttons {
+    gap: .5rem;
+  }
+
+  .edit-button,
+  .delete-button {
+    padding: .35rem .8rem;
+  }
+}
+
+/* Teléfonos (ancho ≤ 600px) */
+@media (max-width: 600px) {
+  .admin-header {
+    font-size: 1.5rem;
+  }
+
+  .admin-table {
+    font-size: .85rem;
+  }
+
+  .modal-box {
+    width: 90%;
+    padding: 1.25rem;
+  }
+
+  .modal-title {
+    font-size: 1.15rem;
+  }
+
+  .current-photos-grid img {
+    max-width: 90px;
+    max-height: 90px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
+  }
+}
+
+/* Teléfonos muy pequeños (ancho ≤ 420px) */
+@media (max-width: 420px) {
+  .admin-container {
+    padding: .75rem;
+  }
+
+  /* Convierte la tabla en tarjetas */
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+  }
+
+  .admin-table tr {
+    margin-bottom: .75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: .5rem .6rem;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  }
+
+  .admin-table td {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    position: relative;
+    padding-left: 45%;
+  }
+
+  .admin-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Añade el nombre de la columna antes de cada celda.
+     Nota: Para un resultado óptimo agrega data-label="NombreColumna"
+     a cada <td> en AdminSpaces.jsx */
+  .admin-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 40%;
+    padding-left: .5rem;
+    font-weight: 600;
+    color: #4b5563;
+  }
+}
