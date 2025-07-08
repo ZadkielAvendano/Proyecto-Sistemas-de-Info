@@ -59,7 +59,7 @@ export default function Register() {
   const handleGoogleRegister = async () => {
     const redirectTo = import.meta.env.DEV
     ? 'http://localhost:5173'
-    : `${window.location.origin}/auth/callback`;
+    : `${window.location.origin}/`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo }
