@@ -1,11 +1,7 @@
 import "./css/ContactPage.css";
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabaseUrl = 'https://eovmmgneddkqooabwvhc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvdm1tZ25lZGRrcW9vYWJ3dmhjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTk1NTU4OCwiZXhwIjoyMDY1NTMxNTg4fQ.oC9ggsfEXVR9IZY7RQUuPI8K5aR7EXE6ck03DP5rM0c';
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from './config/supabase.js';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
