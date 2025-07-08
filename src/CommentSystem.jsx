@@ -3,11 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { UserContext } from './context/UserContext';
 import avatar from "./assets/unimet_logo.png";
 import { useNavigate } from 'react-router';
-
-// Configuración de Supabase
-const supabaseUrl = 'https://eovmmgneddkqooabwvhc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvdm1tZ25lZGRrcW9vYWJ3dmhjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTk1NTU4OCwiZXhwIjoyMDY1NTMxNTg4fQ.oC9ggsfEXVR9IZY7RQUuPI8K5aR7EXE6ck03DP5rM0c';
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from './config/supabase.js';
 
 const starOptions = {
   '5star': '⭐⭐⭐⭐⭐',
