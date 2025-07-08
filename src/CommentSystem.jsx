@@ -1,5 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { UserContext } from './context/UserContext';
 import avatar from "./assets/unimet_logo.png";
+import { verificar_sesion } from "./utils";
+import { useNavigate } from 'react-router';
+
+// Configuración de Supabase
+const supabaseUrl = 'https://eovmmgneddkqooabwvhc.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvdm1tZ25lZGRrcW9vYWJ3dmhjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTk1NTU4OCwiZXhwIjoyMDY1NTMxNTg4fQ.oC9ggsfEXVR9IZY7RQUuPI8K5aR7EXE6ck03DP5rM0c';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const starOptions = {
   '5star': '⭐⭐⭐⭐⭐',
@@ -10,28 +19,78 @@ const starOptions = {
 };
 
 const CommentSystem = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [author, setAuthor] = useState('');
   const [showAllComments, setShowAllComments] = useState(false);
   const [rating, setRating] = useState('5star');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleSubmit = (e) => {
+  // Verificar sesión y cargar comentarios
+  useEffect(() => {
+    const initialize = async () => {
+      const sessionActive = await verificar_sesion();
+      if (!sessionActive) {
+        navigate('/login');
+        return;
+      }
+      
+      await fetchComments();
+    };
+
+    initialize();
+  }, []);
+
+  const fetchComments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      setComments(data || []);
+    } catch (error) {
+      console.error('Error cargando comentarios:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     
-    const comment = {
-      id: Date.now(),
-      text: newComment,
-      author: author || 'Anonymous',
-      date: new Date().toLocaleString(),
-      ProfilePicture: avatar,
-      rating: rating, 
-      stars: starOptions[rating] 
-    };
+    setIsLoading(true);
     
-    setComments([...comments, comment]);
-    setNewComment('');
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .insert([{
+          text: newComment,
+          author: user.user_metadata?.nombre || user.email.split('@')[0],
+          author_id: user.id,
+          rating: rating,
+          stars: starOptions[rating],
+          profile_picture: user.user_metadata?.avatar_url || avatar
+        }])
+        .select();
+
+      if (error) throw error;
+
+      setComments([data[0], ...comments]);
+      setNewComment('');
+    } catch (error) {
+      console.error('Error enviando comentario:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const displayedComments = showAllComments ? comments : comments.slice(0, 3);
@@ -42,29 +101,18 @@ const CommentSystem = () => {
       
       <form onSubmit={handleSubmit} className="comment-form">
         <div className="form-group">
-          <label htmlFor="author">Nombre (opcional)</label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Nombre"
-          />
-        </div>
-        
-        <div className="form-group">
           <label htmlFor="comment">Tu comentario</label>
           <textarea
             id="comment"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Escribe tu comentario aqui"
+            placeholder="Escribe tu comentario aquí"
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="rating">Rating</label>
+          <label htmlFor="rating">Calificación</label>
           <select 
             id="rating" 
             value={rating}
@@ -79,21 +127,33 @@ const CommentSystem = () => {
           </select>
         </div>
         
-        <button type="submit">Postear comentario</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Enviando...' : 'Publicar comentario'}
+        </button>
       </form>
       
       <div className="comments-list">
-        {comments.length === 0 ? (
-          <p>No hay comentarios, se el primero en subir un comentario!!</p>
+        {isLoading && comments.length === 0 ? (
+          <p>Cargando comentarios...</p>
+        ) : comments.length === 0 ? (
+          <p>No hay comentarios, ¡sé el primero en comentar!</p>
         ) : (
           <>
             {displayedComments.map(comment => (
               <div key={comment.id} className="comment">
                 <div className="comment-meta">
-                  <div className="comment-date">{comment.date}</div>
+                  <div className="comment-date">
+                    {new Date(comment.created_at).toLocaleString()}
+                  </div>
                   <div className="comment-author"> 
-                    <img src={comment.ProfilePicture} alt="" /> 
-                    {comment.author}: {comment.text}
+                    <img 
+                      src={comment.profile_picture} 
+                      alt={`Avatar de ${comment.author}`}
+                      onError={(e) => {
+                        e.target.src = avatar;
+                      }}
+                    /> 
+                    <span className="author-name">{comment.author}</span>: {comment.text}
                   </div>
                   <div className="comment-stars">{comment.stars}</div>
                 </div>
@@ -104,7 +164,7 @@ const CommentSystem = () => {
                 onClick={() => setShowAllComments(true)}
                 className="show-more-btn"
               >
-                Mostrar más comentarios
+                Mostrar más comentarios ({comments.length - 3})
               </button>
             )}
           </>
